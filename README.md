@@ -1,4 +1,4 @@
-# hybrid-h5-vue
+# 基于vue 混合开发
 
 ## Project setup
 ```
