@@ -1,8 +1,13 @@
 <template>
-  <van-tabbar v-model="active" active-color="#ee0a24" inactive-color="#000" class="tabbar">
+  <van-tabbar
+    v-model="active"
+    active-color="#ee0a24"
+    inactive-color="#000"
+    class="tabbar"
+  >
     <van-tabbar-item replace to="/">
       <span>首页</span>
-      <template v-slot:icon="props">
+      <template v-slot:icon>
         <!-- <svg-icon :icon-class="props.active ? 'home' : 'home-active'" class-name="home" /> -->
         <svg-icon icon-class="home" class-name="icon-size" />
       </template>
@@ -36,28 +41,25 @@
 
 <script>
 export default {
-
   components: {},
   data() {
     return {
       active: 0
     }
   }
-
 }
-
 </script>
-<style lang='less' scoped>
-.van-tabbar{
-  height: 44PX;
-  ::v-deep{
-    .van-tabbar-item__icon{
-      margin-bottom: 5PX;
+<style lang="less" scoped>
+.van-tabbar {
+  height: 44px;
+  ::v-deep {
+    .van-tabbar-item__icon {
+      margin-bottom: 5px;
     }
   }
-  .icon-size{
-      width: 18PX;
-      height: 18PX;
+  .icon-size {
+    width: 18px;
+    height: 18px;
   }
 }
 </style>

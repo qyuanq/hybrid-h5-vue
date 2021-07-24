@@ -48,7 +48,9 @@
     }
   },
   "lint-staged": {
-    "*.js": "eslint --cache --fix"
+    "*.{js,vue}": [
+      "eslint --cache --fix"
+    ]
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
