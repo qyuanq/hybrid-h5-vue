@@ -32,6 +32,7 @@
     "husky": "^7.0.1",
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
+    "lint-staged": "^11.1.0",
     "postcss": "^8.3.5",
     "postcss-pxtorem": "^5.1.1",
     "prettier": "^2.2.1",
@@ -40,9 +41,12 @@
     "vue-cli-plugin-style-resources-loader": "~0.1.5",
     "vue-template-compiler": "^2.6.11"
   },
+  "lint-staged": {
+    "*.{js,vue}": "eslint --cache --fix"
+  },
   "husky": {
     "hook": {
-      "pre-commit": "npm run lint && npm run serve"
+      "pre-commit": "lint-staged"
     }
   },
   "config": {

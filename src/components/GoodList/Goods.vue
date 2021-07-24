@@ -155,6 +155,10 @@ export default {
                margin-top: @marginSize;
                &-price{
                    font-size: @minInfoSize;
+                   color: @mainColor;
+               }
+               &-volume{
+                  font-size: @minInfoSize;
                }
            }
        }

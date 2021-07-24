@@ -1,9 +1,11 @@
 <template>
   <div class="seconds">
     <div class="seconds-top">
-      <p class="seconds-top-title">京东秒杀</p>
-      <!-- 倒计时组件 -->
-      <count-down :end-hours="17" />
+      <p class="seconds-top-title">
+        京东秒杀
+        <!-- 倒计时组件 -->
+        <count-down :end-hours="17" />
+      </p>
       <p class="seconds-top-more">更多秒杀<svg-icon icon-class="fs" /></p>
     </div>
     <div class="seconds-context">
@@ -55,9 +57,10 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 48px;
+        height: 70px;
         // line-height: 48px;
         &-title{
+            display: flex;
             font-size: @titleSize;
         }
         &-more{
