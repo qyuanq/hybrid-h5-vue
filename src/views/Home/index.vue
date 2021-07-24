@@ -60,7 +60,6 @@ export default {
     }
   },
 
-  computed: {},
   // mounted() {
   //   console.log(Seconds)
   // },
