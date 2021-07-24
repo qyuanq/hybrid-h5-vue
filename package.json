@@ -49,7 +49,7 @@
   },
   "lint-staged": {
     "*.{js,vue}": [
-      "eslint --cache --fix"
+      "eslint  --fix"
     ]
   },
   "gitHooks": {

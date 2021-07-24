@@ -8,6 +8,7 @@
     <van-tabbar-item replace to="/">
       <span>首页</span>
       <template v-slot:icon>
+        <!-- 作用域插槽v-slot:icon="prop" -->
         <!-- <svg-icon :icon-class="props.active ? 'home' : 'home-active'" class-name="home" /> -->
         <svg-icon icon-class="home" class-name="icon-size" />
       </template>
@@ -51,15 +52,15 @@ export default {
 </script>
 <style lang="less" scoped>
 .van-tabbar {
-  height: 44px;
+  height: 44PX;
   ::v-deep {
     .van-tabbar-item__icon {
-      margin-bottom: 5px;
+      margin-bottom: 5PX;
     }
   }
   .icon-size {
-    width: 18px;
-    height: 18px;
+    width: 18PX;
+    height: 18PX;
   }
 }
 </style>

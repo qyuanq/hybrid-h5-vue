@@ -16,7 +16,7 @@ Vue.prototype.$axios = request
 import '@/icons' // icons
 
 // ui库
-import { Button, Tabbar, TabbarItem, Swipe, SwipeItem, Lazyload, Grid, GridItem, NavBar, Search } from 'vant'
+import { Button, Tabbar, TabbarItem, Swipe, SwipeItem, Lazyload, Grid, GridItem, NavBar, Search, DropdownMenu, DropdownItem } from 'vant'
 Vue.use(Button)
 Vue.use(Tabbar)
 Vue.use(TabbarItem)
@@ -27,6 +27,8 @@ Vue.use(Grid)
 Vue.use(GridItem)
 Vue.use(NavBar)
 Vue.use(Search)
+Vue.use(DropdownMenu)
+Vue.use(DropdownItem)
 
 Vue.config.productionTip = false
 

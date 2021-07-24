@@ -1,26 +1,26 @@
 module.exports = {
   root: true,
-  parser: 'vue-eslint-parser', //-
+  //parser: 'vue-eslint-parser', //-
   parserOptions: {
     parser: 'babel-eslint',
     sourceType: 'module',
     ecmaVersion: 2020 //-
   },
-  plugins: [
-    //-
-    // "html",
-    'vue'
-  ],
+  // plugins: [
+  //   //-
+  //   // "html",
+  //   'vue'
+  // ],
   env: {
     browser: true,
     node: true,
     es6: true
   },
-  //基于vue2配置 如果不用prettier 就不加后面的prettier
-  //extends: ['plugin:vue/recommended', 'eslint:recommended','plugin:prettier/recommended'],
+  //基于vue2配置 如果不用prettier 就不加后面的prettier 'plugin:prettier/recommended'
+  extends: ['plugin:vue/recommended', 'eslint:recommended'],
 
   //基于vue/cli配置
-  extends: ['plugin:vue/essential', 'eslint:recommended'],
+  // extends: ['plugin:vue/essential', 'eslint:recommended'],
 
   // add your custom rules here
   // it is base on https://github.com/vuejs/eslint-config-vue

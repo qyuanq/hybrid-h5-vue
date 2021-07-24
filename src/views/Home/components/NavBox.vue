@@ -3,7 +3,7 @@
     <van-swipe class="my-swipe" indicator-color="red" :loop="false">
       <van-swipe-item>
         <van-grid :border="false" :column-num="5">
-          <van-grid-item v-for="nav in navboxData" :key="nav.id" :text="nav.text" to="/">
+          <van-grid-item v-for="nav in navboxData" :key="nav.id" :text="nav.text" to="/goodList">
             <svg-icon :icon-class="nav.icon" class-name="nav-icon" />
             <span class="van-grid-text">{{ nav.text }}</span>
           </van-grid-item>
