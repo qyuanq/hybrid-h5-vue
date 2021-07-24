@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "prepare": "husky install"
   },
   "dependencies": {
     "amfe-flexible": "^2.2.1",
@@ -41,17 +42,15 @@
     "vue-cli-plugin-style-resources-loader": "~0.1.5",
     "vue-template-compiler": "^2.6.11"
   },
-  "lint-staged": {
-    "*.{js,vue}": "eslint --cache --fix"
-  },
-  "husky": {
-    "hook": {
-      "pre-commit": "npm run lint"
-    }
-  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
   }
 }

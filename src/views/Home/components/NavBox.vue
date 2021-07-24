@@ -78,8 +78,6 @@ export default {
     }
   },
 
-  computed: {},
-
   methods: {}
 }
 
