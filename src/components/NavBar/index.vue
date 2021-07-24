@@ -32,11 +32,7 @@ export default {
   data() {
     return {
     }
-  },
-
-  computed: {},
-
-  methods: {}
+  }
 }
 
 </script>
