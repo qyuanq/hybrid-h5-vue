@@ -1,57 +1,97 @@
 <template>
   <div class="good-list-page">
     <nav-bar
-      title="标题"
-      left-text="返回"
-      right-text="按钮"
+      title="商品列表"
       left-arrow
       @click-left="onClickLeft"
-    />
-    <van-dropdown-menu :overlay="overlay">
-      <van-dropdown-item
-        v-model="value1"
-        :options="option1"
-        @open="openOption1"
-        @close="closeOption1"
-      />
-      <van-dropdown-item title="包邮" />
-      <van-dropdown-item title="筛选" />
-    </van-dropdown-menu>
-
-    <div class="good-list-page-content" />
+      @click-right="changeLayout"
+    >
+      <template v-slot:right>
+        <svg-icon :icon-class="layoutType.icon" />
+      </template>
+    </nav-bar>
+    <DropdownMenu :options-datas="optionsDatas" @optionsChange="optionsChange" />
+    <div class="good-list-page-content">
+      <goods :layout-type="layoutType.type" :sort="sortId" />
+    </div>
   </div>
 </template>
 
 <script>
 import NavBar from '@c/NavBar'
+import DropdownMenu from '@c/DropdownMenu'
+import Goods from '@c/GoodList/Goods'
 export default {
-  components: { NavBar },
+  components: {
+    NavBar,
+    DropdownMenu,
+    Goods
+  },
   data() {
     return {
       overlay: false,
       value1: 0,
-      option1: [
+      optionsDatas: [
         {
-          text: '综合',
-          value: 0
+          id: '1',
+          name: '综合',
+          subs: [
+            {
+              id: '1',
+              name: '综合'
+            },
+            {
+              id: '1-2',
+              name: '自营'
+            },
+            {
+              id: '1-3',
+              name: '价格最低'
+            },
+            {
+              id: '1-4',
+              name: '价格最高'
+            }
+          ]
         },
         {
-          text: '最新上架',
-          value: 1
+          id: '2',
+          name: '销量'
         },
         {
-          text: '价格最低',
-          value: 2
+          id: '3',
+          name: '有货优先'
         },
         {
-          text: '价格最高',
-          value: 3
+          id: '4',
+          name: '筛选'
         }
-      ]
+      ],
+      // 切换布局
+      layoutTypeDatas: [
+        {
+          type: '1',
+          icon: 'list'
+        },
+        {
+          type: '2',
+          icon: 'grid'
+        },
+        {
+          type: '3',
+          icon: 'pbl'
+        }
+      ],
+      // 选中布局
+      layoutType: {},
+      // 商品排序
+      sortId: '1'
     }
   },
 
-  computed: {},
+  created() {
+    this.layoutType = this.layoutTypeDatas[0]
+  },
 
   methods: {
     /**
@@ -61,22 +101,32 @@ export default {
       this.$router.go(-1)
     },
     /**
-     * 打开一个菜单
+     * 切换布局
      */
-    openOption1() {
-      this.overlay = true
+    changeLayout() {
+      if (this.layoutType.type === '1') {
+        this.layoutType = this.layoutTypeDatas[1]
+      } else if (this.layoutType.type === '2') {
+        this.layoutType = this.layoutTypeDatas[2]
+      } else {
+        this.layoutType = this.layoutTypeDatas[0]
+      }
     },
+
     /**
-     * 关闭一个菜单
+     * 改变排序
      */
-    closeOption1() {
-      this.overlay = false
+    optionsChange(seleOption) {
+      this.sortId = seleOption.id
     }
   }
 }
 </script>
 <style lang="less" scoped>
 .good-list-page{
+  height: 100%;
+  overflow: hidden;
+  overflow-y: auto;
   &-content{
     display: flex;
     flex-direction: column;

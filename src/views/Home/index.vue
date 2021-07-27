@@ -21,7 +21,7 @@
       <Activity class="activity-ping-gou-jie">
         <img src="@img/haoHuoQiang.gif">
       </Activity>
-      <Goods />
+      <Goods class="home-goods" />
       <ToolBar />
     </div>
   </div>
@@ -133,6 +133,9 @@ export default {
             width: 100%;
         }
     }
+  }
+  &-goods{
+    margin-bottom: 44PX;
   }
 }
 </style>
