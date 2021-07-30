@@ -45,11 +45,22 @@ export default {
 </script>
 <style lang='less' scoped>
 .contact{
+  position: relative;
   background-color: #f2f3f5;
   padding: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  &:before{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 4px;
+    background: repeating-linear-gradient(-45deg, #ff6c6c 0, #ff6c6c 20%, transparent 0, transparent 25%, #1989fa 0, #1989fa 45%, transparent 0, transparent 50%);
+    content: '';
+    background-size: 80px;
+  }
   &-content{
     display: flex;
     align-items: center;
