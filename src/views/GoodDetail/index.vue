@@ -96,7 +96,7 @@
         <van-goods-action-icon icon="cart-o" text="购物车" />
         <van-goods-action-icon icon="star" text="已收藏" color="#ff5000" />
         <van-goods-action-button type="warning" text="加入购物车" />
-        <van-goods-action-button type="danger" text="立即购买" />
+        <van-goods-action-button type="danger" text="立即购买" @click="onBuy" />
       </van-goods-action>
     </div>
   </div>
@@ -167,6 +167,12 @@ export default {
      */
     onScrollChange(scrollTop) {
       this.scrollTopValue = scrollTop
+    },
+    /**
+     * 立即购买
+     */
+    onBuy() {
+      this.$router.push({ name: 'Order', params: { routerType: 'push' }})
     }
   }
 }

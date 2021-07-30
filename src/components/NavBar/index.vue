@@ -25,7 +25,7 @@ export default {
     navBarStyle: {
       type: Object,
       default: function() {
-        return { backgroundColor: 'transparent' }
+        return { backgroundColor: '#fff' }
       }
     }
   },
