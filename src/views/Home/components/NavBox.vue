@@ -3,7 +3,7 @@
     <van-swipe class="my-swipe" indicator-color="red" :loop="false">
       <van-swipe-item>
         <van-grid :border="false" :column-num="5">
-          <van-grid-item v-for="nav in navboxData" :key="nav.id" :text="nav.text" to="/goodList">
+          <van-grid-item v-for="nav in navboxData" :key="nav.id" :text="nav.text" :to="routerData[0]">
             <svg-icon :icon-class="nav.icon" class-name="nav-icon" />
             <span class="van-grid-text">{{ nav.text }}</span>
           </van-grid-item>
@@ -20,6 +20,10 @@ export default {
   components: {},
   data() {
     return {
+      // 路由
+      routerData: [
+        { name: 'GoodList', params: { routerType: 'push' }}
+      ],
       navboxData: [
         // [
         {
@@ -98,6 +102,10 @@ export default {
     }
     .van-swipe__indicators{
       bottom: 8PX;
+    }
+    .van-swipe__indicator{
+      width: 8PX;
+      height: 8PX;
     }
   }
   .nav-icon{

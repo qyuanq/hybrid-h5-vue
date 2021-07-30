@@ -22,6 +22,7 @@ import NavBar from '@c/NavBar'
 import DropdownMenu from '@c/DropdownMenu'
 import Goods from '@c/GoodList/Goods'
 export default {
+  name: 'GoodList',
   components: {
     NavBar,
     DropdownMenu,
@@ -124,6 +125,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .good-list-page{
+  position: absolute;
   height: 100%;
   overflow: hidden;
   overflow-y: auto;

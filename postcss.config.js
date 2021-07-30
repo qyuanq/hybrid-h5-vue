@@ -5,7 +5,10 @@ module.exports = {
     // to edit target browsers: use "browserslist" field in package.json
     'autoprefixer': {},
     'postcss-pxtorem': {
-      rootValue: 75, // UI 设计稿的宽度 / 10
+      // rootValue: 75, // UI 设计稿的宽度 / 10
+      rootValue({ file }) {
+        return file.indexOf('vant') !== -1 ? 37.5 : 75
+      },
       unitPrecision: 6, // 转换后的精度，即小数点位数
       propList: ['*'], // 指定转换的 css 属性的单位，* 代表全部 css 属性的单位都进行转换
       selectorBlackList: [], // 指定不转换为视窗单位的类名

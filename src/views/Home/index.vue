@@ -1,7 +1,7 @@
 <template>
-  <div class="home" @scroll="onScrollChange">
+  <div ref="home" class="home" @scroll="onScrollChange">
     <div class="home-header">
-      <nav-bar :fixed="true" class="home-nav-bar" :nav-bar-style="navBarStyle" :border="false">
+      <nav-bar :fixed="true" class="home-nav-bar z-index-4" :nav-bar-style="navBarStyle" :border="false">
         <template v-slot:left>
           <svg-icon icon-class="menu" />
         </template>
@@ -22,6 +22,7 @@
         <img src="@img/haoHuoQiang.gif">
       </Activity>
       <Goods class="home-goods" />
+      <van-divider>我是有底线的</van-divider>
       <ToolBar />
     </div>
   </div>
@@ -36,7 +37,7 @@ import Activity from '@c/Activity'
 import Goods from '@c/GoodList/Goods'
 import ToolBar from '@c/ToolBar'
 export default {
-
+  name: 'Home',
   components: {
     NavBar,
     Swiper,
@@ -60,9 +61,10 @@ export default {
     }
   },
 
-  // mounted() {
-  //   console.log(Seconds)
-  // },
+  activated() {
+    // 组件被激活时，页面滚动值为最后滚动的位置
+    this.$refs.home.scrollTop = this.scrollTopValue
+  },
 
   methods: {
     /**
@@ -84,17 +86,20 @@ export default {
 </script>
 <style lang='less' scoped>
 .home{
+  position: absolute;
+  width: 100%;
   height: 100%;
   overflow: hidden;
   overflow-y: auto;
+  padding-bottom: 100px;
   &-nav-bar{
     ::v-deep{
-      .van-nav-bar__content{
-        height: 44PX;
-      }
+      // .van-nav-bar__content{
+      //   height: 44PX;
+      // }
       .van-nav-bar__title{
-        max-width: 86%;
-        width: 86%;
+        max-width: 80%;
+        width: 80%;
       }
     }
     .van-search{
@@ -102,6 +107,12 @@ export default {
       box-sizing: border-box;
       height: 30PX;
       border-radius: @radiusSize;
+      .van-search__content{
+        padding-left: 0;
+      }
+      .van-cell{
+        padding: 0;
+      }
     }
     .zixun{
       color: white;
@@ -125,6 +136,12 @@ export default {
     padding: 0 20px;
     .swiper{
       margin-top: @marginSize + 88px;
+      ::v-deep{
+        .van-swipe__indicator{
+          width: 8PX;
+          height: 8PX;
+        }
+      }
     }
     .activity-ping-gou-jie {
         background-color: white;
@@ -133,9 +150,6 @@ export default {
             width: 100%;
         }
     }
-  }
-  &-goods{
-    margin-bottom: 44PX;
   }
 }
 </style>

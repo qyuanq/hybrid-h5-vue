@@ -6,6 +6,7 @@
       ref="goodsItem"
       :class="['goods-item',layoutItemClass]"
       :style="goodsItemStyles[index]"
+      @click="onGoodDetail(item)"
     >
       <img :src="item.picture" alt="" class="goods-item-img" :style="imgStyles[index]">
       <div class="goods-item-desc">
@@ -250,6 +251,18 @@ export default {
           })
           break
       }
+    },
+    /**
+     * 跳转商品详情页
+     */
+    onGoodDetail(item) {
+      this.$router.push({
+        name: 'GoodDetail',
+        params: {
+          goods: item,
+          routerType: 'push'
+        }
+      })
     }
   }
 }

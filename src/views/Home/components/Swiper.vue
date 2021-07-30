@@ -17,6 +17,12 @@ export default {
       type: String,
       default: 'auto'
     }
+    // images: {
+    //   type: Array,
+    //   default: function() {
+    //     return []
+    //   }
+    // }
   },
   data() {
     return {

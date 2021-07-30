@@ -72,15 +72,15 @@ export default {
      * 一级菜单点击
      */
     onMenuList(menuItem) {
+      this.seletOption = menuItem
       const subs = menuItem.subs && menuItem.subs.length > 0
+
       // 当前子视图展开，让它关闭
       if (this.isShowSubContent) {
         this.isShowSubContent = false
-        this.seletOption = menuItem
         return
       }
-      this.seletOption = menuItem
-      if (subs && this.seletOption.id === menuItem.id) {
+      if (subs) {
         this.isShowSubContent = true
       }
     },
@@ -118,8 +118,11 @@ export default {
     justify-content: space-around;
     align-items: center;
     &-item{
+      display: flex;
+      align-items: center;
       //三角形
       &-icon{
+        margin-left: 6px;
         display: inline-block;
         width: 0;
         height: 0;

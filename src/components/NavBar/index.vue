@@ -36,11 +36,12 @@ export default {
 }
 
 </script>
-<style lang='less' scoped>
-// ::v-deep{
-    .van-nav-bar{
-        height: @navBarHeight;
-        line-height: @navBarHeight;
-    }
-// }
+<style lang='less'>
+  .van-nav-bar{
+      // height: @navBarHeight;
+      // line-height: @navBarHeight;
+      .van-icon{
+        color: #252525;
+      }
+  }
 </style>

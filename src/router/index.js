@@ -12,9 +12,13 @@ const routes = [
   },
   {
     path: '/goodList',
-    name: 'goodList',
-    component: () =>
-      import('@/views/GoodList')
+    name: 'GoodList',
+    component: () => import('@/views/GoodList')
+  },
+  {
+    path: '/goodDetail',
+    name: 'GoodDetail',
+    component: () => import('@/views/GoodDetail')
   }
 ]
 

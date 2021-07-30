@@ -1,0 +1,61 @@
+<template>
+  <div class="parallax" @scroll="onScrollChange">
+    <!-- 缓慢移动区 -->
+    <div class="parallax-slow" :style="{top:slowTop}">
+      <slot name="parallax-slow" />
+    </div>
+    <!-- 正常移动区 -->
+    <div class="parallax-content z-index-2">
+      <slot />
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+
+  components: {},
+  data() {
+    return {
+      // 页面滚动距离
+      parallaxScroll: 0,
+      // 速度差
+      SPEED_DIFF: 2
+    }
+  },
+
+  computed: {
+    // 返回slow距离顶部的距离
+    slowTop() {
+      // 当前页面的滑动距离 / 速度差 = 该内容区实际应该滑动的距离
+      // 当前页面的滑动距离 - 该内容区实际应该滑动的距离 = slow 距离顶部的距离
+      return (this.parallaxScroll - this.parallaxScroll / this.SPEED_DIFF) + 'px'
+    }
+  },
+
+  methods: {
+    /**
+     * 滚动改变
+     */
+    onScrollChange(event) {
+      this.parallaxScroll = event.target.scrollTop
+      this.$emit('onScrollChange', this.parallaxScroll)
+    }
+  }
+}
+
+</script>
+<style lang='less' scoped>
+.parallax{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overflow-y: auto;
+  &-slow{
+    position: relative;
+  }
+  &-content{
+    position: relative;
+  }
+}
+</style>
