@@ -1,3 +1,6 @@
+<!--
+  @name:倒计时组件
+-->
 <template>
   <div class="count-down">
     <!-- 12点场 00:32:18 -->

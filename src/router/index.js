@@ -1,14 +1,39 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '@/views/Home'
+import Main from '@/views/Main.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+  // {
+  //   path: '/',
+  //   redirect: '/main'
+  // },
+  // {
+  //   path: '/main',
+  //   redirect: '/main/home',
+  //   name: 'Main',
+  //   component: Main,
+  //   meta: { keepAlive: true },
+  //   children: [
+  //     {
+  //       path: 'home',
+  //       name: 'Home',
+  //       component: () => import('@/views/Home'),
+  //       meta: { keepAlive: true }
+  //     },
+  //     {
+  //       path: 'cart',
+  //       name: 'Cart',
+  //       component: () => import('@/views/Cart'),
+  //       meta: { keepAlive: true }
+  //     }
+  //   ]
+  // },
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Main',
+    component: Main
   },
   {
     path: '/goodList',
@@ -28,7 +53,19 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  // base: process.env.BASE_URL,
   routes
+  // scrollBehavior(to, from, savedPosition) {
+  //   // 解决路由跳转页面没有置顶
+  //   if (savedPosition) {
+  //     return savedPosition
+  //   } else {
+  //     return {
+  //       x: 0,
+  //       y: 0
+  //     }
+  //   }
+  // }
 })
 
 export default router

@@ -27,14 +27,14 @@ export default {
     return {
       goodList: [
         { id: 1, price: 99.012, oldPrice: 108, img: require('@/assets/images/jingDongMiaoSha-10.jpg') },
-        { id: 1, price: 99.85, oldPrice: 108, img: require('@/assets/images/jingDongMiaoSha-9.jpg') },
-        { id: 1, price: 99.00, oldPrice: 108, img: require('@/assets/images/jingDongMiaoSha-8.jpg') },
-        { id: 1, price: 99.268, oldPrice: 108, img: require('@/assets/images/jingDongMiaoSha-7.jpg') },
-        { id: 1, price: 99, oldPrice: 108, img: require('@/assets/images/jingDongMiaoSha-6.jpg') },
-        { id: 1, price: 99, oldPrice: 108, img: require('@/assets/images/jingDongMiaoSha-5.jpg') },
-        { id: 1, price: 99, oldPrice: 108, img: require('@/assets/images/jingDongMiaoSha-4.jpg') },
-        { id: 1, price: 99, oldPrice: 108, img: require('@/assets/images/jingDongMiaoSha-3.jpg') },
-        { id: 1, price: 99, oldPrice: 108, img: require('@/assets/images/jingDongMiaoSha-2.jpg') }
+        { id: 2, price: 99.85, oldPrice: 108, img: require('@/assets/images/jingDongMiaoSha-9.jpg') },
+        { id: 3, price: 99.00, oldPrice: 108, img: require('@/assets/images/jingDongMiaoSha-8.jpg') },
+        { id: 4, price: 99.268, oldPrice: 108, img: require('@/assets/images/jingDongMiaoSha-7.jpg') },
+        { id: 5, price: 99, oldPrice: 108, img: require('@/assets/images/jingDongMiaoSha-6.jpg') },
+        { id: 6, price: 99, oldPrice: 108, img: require('@/assets/images/jingDongMiaoSha-5.jpg') },
+        { id: 7, price: 99, oldPrice: 108, img: require('@/assets/images/jingDongMiaoSha-4.jpg') },
+        { id: 8, price: 99, oldPrice: 108, img: require('@/assets/images/jingDongMiaoSha-3.jpg') },
+        { id: 9, price: 99, oldPrice: 108, img: require('@/assets/images/jingDongMiaoSha-2.jpg') }
       ]
     }
   },

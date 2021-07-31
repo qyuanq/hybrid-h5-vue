@@ -1,3 +1,6 @@
+<!--
+  @name: 支付方式组件
+-->
 <template>
   <div class="pay">
     <van-radio-group v-model="radio">

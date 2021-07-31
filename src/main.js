@@ -16,7 +16,7 @@ Vue.prototype.$axios = request
 import '@/icons' // icons
 
 // ui库
-import { Button, Tabbar, TabbarItem, Swipe, SwipeItem, Lazyload, Grid, GridItem, NavBar, Search, DropdownMenu, DropdownItem, Overlay, Tag, GoodsAction, GoodsActionIcon, GoodsActionButton, Divider, Stepper, SubmitBar, RadioGroup, Radio, Cell, CellGroup } from 'vant'
+import { Button, Tabbar, TabbarItem, Swipe, SwipeItem, Lazyload, Grid, GridItem, NavBar, Search, DropdownMenu, DropdownItem, Overlay, Tag, GoodsAction, GoodsActionIcon, GoodsActionButton, Divider, Stepper, SubmitBar, RadioGroup, Radio, Cell, CellGroup, Badge, Checkbox, CheckboxGroup } from 'vant'
 Vue.use(Button)
 Vue.use(Tabbar)
 Vue.use(TabbarItem)
@@ -41,6 +41,9 @@ Vue.use(RadioGroup)
 Vue.use(Radio)
 Vue.use(Cell)
 Vue.use(CellGroup)
+Vue.use(Badge)
+Vue.use(Checkbox)
+Vue.use(CheckboxGroup)
 
 Vue.config.productionTip = false
 

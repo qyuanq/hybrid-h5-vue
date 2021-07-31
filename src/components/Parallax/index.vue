@@ -1,3 +1,6 @@
+<!--
+  @name: 滚动视差组件
+-->
 <template>
   <div class="parallax" @scroll="onScrollChange">
     <!-- 缓慢移动区 -->

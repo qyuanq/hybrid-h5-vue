@@ -1,9 +1,5 @@
 <template>
   <div id="app">
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div> -->
     <transition :name="transitionName">
       <keep-alive :include="keepAliveNames">
         <router-view />
@@ -20,24 +16,27 @@ export default {
   data() {
     return {
       // transition name
-      transitionName: 'fold-left',
+      transitionName: '',
       // 只有名称匹配的组件会被缓存
       keepAliveNames: [
-        'Home'
+        'Main'
       ]
     }
   },
   watch: {
     // 监听路由变化，判断执行前进 or 后退 动画
     '$route'(to, from) {
+      if (to.params.clearTask) {
+        // 初始化虚拟任务栈
+        this.virtualTaskStack = ['Main']
+        return
+      }
       const routerType = to.params.routerType
       if (routerType === 'push') {
         this.keepAliveNames.push(to.name)
-        console.log(this.keepAliveNames)
         this.transitionName = 'fold-left'
       } else {
         this.keepAliveNames.pop()
-        console.log(this.keepAliveNames)
         this.transitionName = 'fold-right'
       }
     }

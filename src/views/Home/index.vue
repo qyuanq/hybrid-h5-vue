@@ -23,7 +23,6 @@
       </Activity>
       <Goods class="home-goods" />
       <van-divider>我是有底线的</van-divider>
-      <ToolBar />
     </div>
   </div>
 </template>
@@ -35,7 +34,6 @@ import NavBox from './components/NavBox'
 import Seconds from './components/Seconds'
 import Activity from '@c/Activity'
 import Goods from '@c/GoodList/Goods'
-import ToolBar from '@c/ToolBar'
 export default {
   name: 'Home',
   components: {
@@ -44,8 +42,7 @@ export default {
     NavBox,
     Seconds,
     Activity,
-    Goods,
-    ToolBar
+    Goods
   },
   data() {
     return {
@@ -64,6 +61,7 @@ export default {
   activated() {
     // 组件被激活时，页面滚动值为最后滚动的位置
     this.$refs.home.scrollTop = this.scrollTopValue
+    console.log(this.scrollTopValue)
   },
 
   methods: {
@@ -86,7 +84,6 @@ export default {
 </script>
 <style lang='less' scoped>
 .home{
-  position: absolute;
   width: 100%;
   height: 100%;
   overflow: hidden;

@@ -1,5 +1,5 @@
 <!--
-  联系人组件
+  @name:联系人组件
 -->
 <template>
   <div class="contact">

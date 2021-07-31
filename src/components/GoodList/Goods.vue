@@ -1,3 +1,6 @@
+<!--
+  @name: 商品展示组件
+-->
 <template>
   <div :class="['goods',layoutClass]" :style="{height: goodsViewHeight}">
     <div

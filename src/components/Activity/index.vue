@@ -1,3 +1,6 @@
+<!--
+  @name:活动图片组件
+-->
 <template>
   <div class="activity">
     <slot />
