@@ -38,7 +38,7 @@
       </template>
     </van-tabbar-item>
     <!-- <van-tabbar-item replace to="/user"> -->
-    <van-tabbar-item name="user">
+    <van-tabbar-item name="my">
       <span class="tabbar-text">未登录</span>
       <template v-slot:icon>
         <svg-icon icon-class="login" class-name="icon-size" />

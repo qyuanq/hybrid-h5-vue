@@ -21,7 +21,8 @@ export default {
   components: {
     ToolBar,
     'home': () => import('@/views/Home'),
-    'cart': () => import('@/views/Cart')
+    'cart': () => import('@/views/Cart'),
+    'my': () => import('@/views/My')
   },
   data() {
     return {
