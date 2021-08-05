@@ -1,12 +1,12 @@
 <template>
   <div class="goods-info">
     <div class="goods-info-img">
-      <img src="@/assets/images/jingDongMiaoSha-2.jpg" alt="">
+      <img :src="goods.picture" alt="">
     </div>
     <div class="goods-info-content">
-      <p class="goods-info-content-desc text-line-2">xxxxxxxxxxxxxxxxxxxxxx</p>
+      <p class="goods-info-content-desc text-line-2">{{ goods.desc }}</p>
       <div class="goods-info-content-operation">
-        <div class="goods-info-content-operation-price">{{ goods.price | priceValue }}</div>
+        <div class="goods-info-content-operation-price"><em>￥</em>{{ goods.price | priceValue }}</div>
         <van-stepper v-model="num" integer @change="changeNum" />
       </div>
     </div>
@@ -26,18 +26,27 @@ export default {
   data() {
     return {
       // 数量
-      num: 1
+      num: this.goods.number
     }
   },
 
-  computed: {},
+  watch: {
+    goods: {
+      handler(o, n) {
+        this.goods = n
+        this.num = this.goods.number
+      },
+      deep: true
+    }
+  },
 
   methods: {
     /**
      * 数量变了
      */
     changeNum() {
-
+      console.log(this.goods)
+      this.$store.dispatch('Cart/setCartNumber', { cartId: this.goods.id, num: this.num })
     }
   }
 }
@@ -65,9 +74,18 @@ export default {
       font-size: @minInfoSize;
     }
     &-operation{
+      margin-top: @marginSize;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      &-price{
+        font-size: @infoSize;
+        font-weight: 700;
+        color: @mainColor;
+        em{
+          font-size: @minSize;
+        }
+      }
     }
   }
 }

@@ -61,6 +61,7 @@ export default {
      */
     onRadio(radioName) {
       this.radio = radioName
+      this.$emit('change', radioName)
     }
   }
 }

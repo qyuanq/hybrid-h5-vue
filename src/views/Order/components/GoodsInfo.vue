@@ -1,13 +1,14 @@
 <template>
   <div class="goods-info">
     <div class="goods-info-img">
-      <img src="@/assets/images/jingDongMiaoSha-2.jpg" alt="">
+      <img :src="goods.picture" alt="">
     </div>
     <div class="goods-info-content">
-      <p class="goods-info-content-desc text-line-2">xxxxxxxxxxxxxxxxxxxxxx</p>
+      <p class="goods-info-content-desc text-line-2">{{ goods.desc }}</p>
       <div class="goods-info-content-operation">
-        <div class="goods-info-content-operation-price">{{ goods.price | priceValue }}</div>
-        <van-stepper v-model="num" integer @change="changeNum" />
+        <div class="goods-info-content-operation-price"><em>￥</em>{{ goods.price | priceValue }}</div>
+        <van-stepper v-if="isType === 'now'" v-model="num" integer @change="changeNum" />
+        <span v-else>{{ 'x ' + num }}</span>
       </div>
     </div>
   </div>
@@ -21,12 +22,16 @@ export default {
       default: function() {
         return {}
       }
+    },
+    isType: {
+      type: String,
+      default: 'now'
     }
   },
   data() {
     return {
       // 数量
-      num: 1
+      num: this.goods.number
     }
   },
 
@@ -37,7 +42,7 @@ export default {
      * 数量变了
      */
     changeNum() {
-
+      this.$emit('change', this.num)
     }
   }
 }
@@ -68,6 +73,13 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-size: @infoSize;
+      &-price{
+        color: @mainColor;
+        em{
+          font-size: @minSize;
+        }
+      }
     }
   }
 }

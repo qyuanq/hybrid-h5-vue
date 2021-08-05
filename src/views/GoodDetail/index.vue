@@ -44,7 +44,7 @@
           <!-- 秒杀 -->
           <!-- 商品描述 -->
           <div class="good-detail-desc">
-            <p class="good-detail-desc-name text-line-2">{{ '【顺丰包邮】CHERRY樱桃原装DW3000无线办公打字静音电脑外设键盘鼠标套装码字便携usb键盘' }}</p>
+            <p class="good-detail-desc-name text-line-2">{{ goodInfo.desc }}</p>
             <div class="good-detail-desc-wrap">
               <div class="good-detail-desc-wrap-item">
                 <span>快递：</span>
@@ -95,7 +95,7 @@
         <van-goods-action-icon icon="chat-o" text="客服" color="#ee0a24" />
         <van-goods-action-icon icon="cart-o" text="购物车" :to="{name:'Main',params:{componentName:'cart',clearTask:'true'}}" />
         <van-goods-action-icon icon="star" text="已收藏" color="#ff5000" />
-        <van-goods-action-button type="warning" text="加入购物车" />
+        <van-goods-action-button type="warning" text="加入购物车" @click="addCart" />
         <van-goods-action-button type="danger" text="立即购买" @click="onBuy" />
       </van-goods-action>
     </div>
@@ -144,9 +144,12 @@ export default {
     }
   },
 
-  created() {
-    this.goodInfo = this.$route.params.goods
-    console.log(this.goodInfo)
+  async created() {
+    const goodId = this.$route.params.goods
+    const res = await this.$axios.get(`api/goods/${goodId}`)
+    if (res.code === 0) {
+      this.goodInfo = res.data
+    }
   },
 
   methods: {
@@ -172,7 +175,18 @@ export default {
      * 立即购买
      */
     onBuy() {
-      this.$router.push({ name: 'Order', params: { routerType: 'push' }})
+      this.$router.push(
+        {
+          name: 'Order',
+          params: { routerType: 'push', goodId: this.$route.params.goods }
+        }
+      )
+    },
+    /**
+     * 加入购物车
+     */
+    async addCart() {
+      await this.$store.dispatch('Cart/addCartData', this.goodInfo)
     }
   }
 }
