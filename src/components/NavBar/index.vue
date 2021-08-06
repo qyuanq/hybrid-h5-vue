@@ -2,6 +2,7 @@
   <van-nav-bar
     v-bind="$attrs"
     :style="navBarStyle"
+    :class="{'iphonex-top':$store.state.isIphoneX}"
     v-on="$listeners"
   >
     <slot v-for="(_,name) in $slots" :slot="name" :name="name">
@@ -38,8 +39,8 @@ export default {
 </script>
 <style lang='less'>
   .van-nav-bar{
-      // height: @navBarHeight;
-      // line-height: @navBarHeight;
+      //适配手机
+      padding-top: 22PX;
       .van-icon{
         color: #252525;
       }

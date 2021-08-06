@@ -5,8 +5,20 @@ import Cart from './modules/cart'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
+  state: {
+    // 设备是否为iPhoneX
+    isIphoneX: false
+  },
+  mutations: {
+    /**
+     * 修改iPhoneX
+     * @param {*} state
+     * @param {*} isIphoneX
+     */
+    setIsIphoneX(state, isIphoneX) {
+      state.isIphoneX = isIphoneX
+    }
+  },
   actions: {},
   modules: {
     Cart

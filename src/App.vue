@@ -40,6 +40,10 @@ export default {
         this.transitionName = 'fold-right'
       }
     }
+  },
+  created() {
+    this.$store.commit('setIsIphoneX', window.isIphoneX)
+    console.log('iphonex', window.isIphoneX, this.$store.state.isIphoneX)
   }
 }
 </script>

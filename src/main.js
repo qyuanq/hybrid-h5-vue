@@ -8,6 +8,7 @@ import 'amfe-flexible'
 
 import '@/styles/index.less'
 import '@utils/filters.js'
+import '@utils/isIphoneX.js'
 
 // axios
 import request from '@/utils/request'
