@@ -148,6 +148,7 @@ export default {
 </script>
 <style lang='less' scoped>
 .cart{
+  width: 100%;
   &-no{
 
   }

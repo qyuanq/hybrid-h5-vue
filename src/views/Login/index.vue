@@ -62,7 +62,7 @@
 <script>
 import NavBar from '@c/NavBar'
 export default {
-
+  name: 'Login',
   components: {
     NavBar
   },
@@ -73,7 +73,8 @@ export default {
       tel: '',
       // 登陆方式 短信验证码smscode 密码 pawcode
       loginType: 'smscode',
-      checked: true
+      checked: true,
+      password: ''
     }
   },
 
@@ -84,7 +85,84 @@ export default {
      * 提交
      */
     onSubmit() {
+      // 1.表单验证
 
+      // 2.与native交互
+      if (window.androidJSBridge) {
+        this.onLoginToAndroid()
+      } else if (window.webkit) {
+        this.onLoginToIos()
+      }
+    },
+    /**
+     * android登录
+     */
+    onLoginToAndroid() {
+      const params = JSON.stringify({
+        'tel': this.tel,
+        'pwd': this.password
+      })
+      const result = window.androidJSBridge.login(params)
+      this.onLoginCallback(result)
+    },
+    /**
+     * ios登录
+     */
+    onLoginToIos() {
+      const params = {
+        'tel': this.tel,
+        'pwd': this.password
+      }
+      window.loginCallback = this.onLoginCallback
+      window.webkit.messageHandlers.login.postMessage(params)
+    },
+    /**
+     * 回调函数
+     */
+    onLoginCallback(result) {
+      switch (result) {
+        case '-1':
+          this.$notice({
+            type: 'danger',
+            message: '系统内部错误'
+          })
+          break
+        case '0':
+          this.$notice({
+            type: 'success',
+            message: '登录成功'
+          })
+          // 保存用户标识
+          this.$store.commit('setUserToken', this.tel)
+          break
+        case '1':
+          this.$notice({
+            type: 'danger',
+            message: '用户不存在'
+          })
+          break
+        case '2':
+          this.$notice({
+            type: 'danger',
+            message: '密码错误'
+          })
+          break
+      }
+      if (result) {
+        this.$notice({
+          type: 'success',
+          message: '登录成功'
+        })
+        // 回之前点击页
+        this.$router.push({
+          name: 'Home'
+        })
+      } else {
+        this.$notice({
+          type: 'success',
+          message: '登录成功'
+        })
+      }
     },
     /**
      * 关闭当前页

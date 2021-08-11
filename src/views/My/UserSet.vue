@@ -122,7 +122,42 @@ export default {
      * 退出登录
      */
     onExit() {
-
+      if (window.androidJSBridge) {
+        this.onLogoutToAndroid()
+      } else if (window.webkit) {
+        this.onLogoutToIos()
+      }
+    },
+    /**
+     * android退出
+     */
+    onLogoutToAndroid() {
+      const result = window.androidJSBridge.logout()
+      this.onLogoutCallback(result)
+    },
+    /**
+     * ios退出
+     */
+    onLogoutToIos() {
+      window.webkit.messageHandlers.logout.postMessage({})
+      window.logoutCallback = this.onLogoutCallback
+    },
+    /**
+     * 回调函数
+     */
+    onLogoutCallback(result) {
+      if (result) {
+        this.$store.commit('clearUserToken')
+        this.$notice({
+          type: 'success',
+          message: '退出成功'
+        })
+      } else {
+        this.$notice({
+          type: 'danger',
+          message: '退出失败'
+        })
+      }
     },
     /**
      * 编辑用户

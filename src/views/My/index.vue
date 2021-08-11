@@ -129,6 +129,7 @@ export default {
 <style lang='less' scoped>
 .my{
   height: 100%;
+  width: 100%;
   overflow: hidden;
   overflow-y: auto;
   position: absolute;

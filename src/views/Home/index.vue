@@ -119,20 +119,20 @@ export default {
     position: relative;
     width: 100%;
     &-bg{
-       width: 150%;
+      width: 150%;
       height: 208px;
       background-image: linear-gradient(0deg,#f1503b,#c82519 50%);
       border-bottom-left-radius: 100%;
       border-bottom-right-radius: 100%;
       position: absolute;
-      top: 0;
+      top: 22PX;
       left: -25%;
     }
   }
   &-context{
     padding: 0 20px;
     .swiper{
-      margin-top: @marginSize + 88px;
+      margin-top: @marginSize + 88px + 22PX;
       ::v-deep{
         .van-swipe__indicator{
           width: 8PX;

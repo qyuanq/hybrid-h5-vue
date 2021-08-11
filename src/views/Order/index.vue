@@ -130,9 +130,38 @@ export default {
     onSubmit() {
       if (this.selectPayment === 1) {
         // 跳微信支付
-        return
+
+      } else {
+        // 跳支付宝支付
       }
-      // 跳支付宝支付
+    },
+    /**
+     * 支付宝支付
+     */
+    aliPay() {
+      if (window.androidJSBridge) { // android
+        const goodsData = JSON.stringify({
+          name: this.goods.name,
+          price: this.totalPrice
+        })
+        window.androidJSBridge.aliPay(goodsData)
+      } else if (window.webkit) { // ios
+
+      }
+    },
+    /**
+     * 微信支付
+     */
+    wxPay() {
+      if (window.androidJSBridge) { // android
+        const goodsData = JSON.stringify({
+          name: this.goods.name,
+          price: this.totalPrice
+        })
+        window.androidJSBridge.wxPay(goodsData)
+      } else if (window.webkit) { // ios
+
+      }
     }
   }
 }

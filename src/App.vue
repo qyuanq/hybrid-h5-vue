@@ -44,6 +44,17 @@ export default {
   created() {
     this.$store.commit('setIsIphoneX', window.isIphoneX)
     console.log('iphonex', window.isIphoneX, this.$store.state.isIphoneX)
+    // 指定Native主动调用的方法
+    window.nativeFunctionUserLogin = this.nativeFunctionUserLogin
+  },
+  methods: {
+    /**
+     * 接收当前自动登录的用户的用户名
+     * 保存当前自动登录的用户名到vuex
+     */
+    nativeFunctionUserLogin(userToken) {
+      this.$store.commit('setUserToken', userToken)
+    }
   }
 }
 </script>

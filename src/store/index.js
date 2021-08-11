@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Cart from './modules/cart'
+import User from './modules/user'
 
 Vue.use(Vuex)
 
@@ -21,6 +22,7 @@ export default new Vuex.Store({
   },
   actions: {},
   modules: {
-    Cart
+    Cart,
+    User
   }
 })
