@@ -8,7 +8,7 @@
       @click-right="onSet"
     />
     <div class="my-content">
-      <div class="my-content-header">
+      <div :class="['my-content-header',{'my-content-header-iphoneX':$store.state.isIphoneX}]">
         <div class="user-info">
           <div class="user-info-content">
             <div class="user-info-content-icon">
@@ -139,11 +139,17 @@ export default {
     }
   }
   &-content{
-    padding-bottom: 100px;
+    padding-bottom: calc(100px + constant(safe-area-inset-bottom));
+    padding-bottom: calc(100px + env(safe-area-inset-bottom));
     &-header{
       width: 100%;
+      padding-top: @statusBarHeight;
       padding-bottom: 60px;
       background: url('../../assets/images/mybg.png') no-repeat scroll 0 0/cover;
+      &-iphoneX{
+        padding-top: constant(safe-area-inset-top);
+        padding-top: env(safe-area-inset-top);
+      }
       .user-info{
         padding: @paddingSize;
         display: flex;

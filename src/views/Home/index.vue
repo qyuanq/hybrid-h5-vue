@@ -88,7 +88,8 @@ export default {
   height: 100%;
   overflow: hidden;
   overflow-y: auto;
-  padding-bottom: 100px;
+  padding-bottom: calc(100px + constant(safe-area-inset-bottom));
+  padding-bottom: calc(100px + env(safe-area-inset-bottom));
   &-nav-bar{
     ::v-deep{
       // .van-nav-bar__content{
@@ -120,23 +121,27 @@ export default {
     width: 100%;
     &-bg{
       width: 150%;
-      height: 208px;
       background-image: linear-gradient(0deg,#f1503b,#c82519 50%);
       border-bottom-left-radius: 100%;
       border-bottom-right-radius: 100%;
       position: absolute;
-      top: 22PX;
+      top: 0;
       left: -25%;
+      height: 268px + @statusBarHeight;
+      height: calc(268px + @statusBarHeight + constant(safe-area-inset-top));
+      height: calc(268px + @statusBarHeight + env(safe-area-inset-top));
     }
   }
   &-context{
     padding: 0 20px;
     .swiper{
-      margin-top: @marginSize + 88px + 22PX;
+        margin-top: @marginSize + 92px + @statusBarHeight;
+        margin-top: calc(@marginSize + 92px  + constant(safe-area-inset-top));
+        margin-top: calc(@marginSize + 92px  + env(safe-area-inset-top));
       ::v-deep{
         .van-swipe__indicator{
-          width: 8PX;
-          height: 8PX;
+          width: 12px;
+          height: 12px;
         }
       }
     }

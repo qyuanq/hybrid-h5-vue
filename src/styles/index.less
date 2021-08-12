@@ -39,10 +39,12 @@
 
 //iPhoneX顶部危险区
 .iphonex-top{
-  padding-top: 44PX;
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
 }
 //iphonex底部危险区
 .iphonex-bottom{
-  padding-bottom: 34PX;
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 

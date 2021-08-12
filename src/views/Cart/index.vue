@@ -36,9 +36,9 @@
         <van-submit-bar
           v-if="!isEdit"
           :disabled="disabled"
-          class="cart-have-bar-submit"
           :price="totalPrice"
           :button-text="'结算 ' + totalCount"
+          :safe-area-inset-bottom="false"
           @submit="onSubmit"
         >
           <van-checkbox :value="isSelectAll" checked-color="#ee0a24" @click="changeChecked">全选</van-checkbox>
@@ -173,8 +173,12 @@ export default {
       }
     }
     &-bar{
-      &-submit{
-        margin-bottom: 100px;
+      ::v-deep{
+        .van-submit-bar{
+          bottom: calc(100px + constant(safe-area-inset-bottom));
+          bottom: calc(100px + env(safe-area-inset-bottom));
+          box-sizing: border-box;
+        }
       }
       &-edit{
         width: 100%;

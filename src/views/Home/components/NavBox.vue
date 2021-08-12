@@ -104,8 +104,8 @@ export default {
       bottom: 8PX;
     }
     .van-swipe__indicator{
-      width: 8PX;
-      height: 8PX;
+      width: 12px;
+      height: 12px;
     }
   }
   .nav-icon{

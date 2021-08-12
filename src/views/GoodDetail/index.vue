@@ -194,10 +194,14 @@ export default {
 </script>
 <style lang='less' scoped>
 .good-detail{
+  padding-top: @statusBarHeight;
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
   position: absolute;
   width: 100%;
   height: 100%;
-  padding-bottom: 100px;
+  padding-bottom: calc(100px + constant(safe-area-inset-bottom));
+  padding-bottom: calc(100px + env(safe-area-inset-bottom));
   &-navbar{
     &-icon{
       position:absolute;

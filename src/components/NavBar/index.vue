@@ -39,8 +39,9 @@ export default {
 </script>
 <style lang='less'>
   .van-nav-bar{
-      //适配手机
-      padding-top: 22PX;
+    //适配手机
+    padding-top: @statusBarHeight;
+      box-sizing: border-box;
       .van-icon{
         color: #252525;
       }

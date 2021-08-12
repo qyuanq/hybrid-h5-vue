@@ -68,6 +68,8 @@ export default {
   // color: #2c3e50;
   width: 100%;
   height:100%;
+  // padding-bottom: constant(safe-area-inset-bottom);
+  // padding-bottom: env(safe-area-inset-bottom);
   //push页面时： 新页面进入动画
   .fold-left-enter-active{
     animation-name: fold-left-in;

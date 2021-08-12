@@ -170,7 +170,7 @@ export default {
 <style lang='less' scoped>
 .order-fill{
   &-contact{
-    margin-top: 92px;
+    margin-top: @statusBarHeight + 92px;
   }
   &-goods{
     margin-top: @marginSize;

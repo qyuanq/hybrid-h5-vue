@@ -2,7 +2,6 @@
   <van-tabbar
     active-color="#ee0a24"
     inactive-color="#000"
-    :class="['tabbar',{'iphonex-bottom':$store.state.isIphoneX}]"
     :safe-area-inset-bottom="true"
     v-bind="$attrs"
     v-on="$listeners"
