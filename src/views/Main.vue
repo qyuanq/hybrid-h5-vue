@@ -8,7 +8,7 @@
       <component :is="isComponent" />
     </keep-alive>
     <tool-bar
-      v-model="isComponent"
+      :value="isComponent"
       @change="changeComponent"
     />
   </div>
@@ -39,7 +39,17 @@ export default {
      * 切换tabbar
      */
     changeComponent(active) {
-      this.isComponent = active
+      // 去登录页
+      if ((active === 'cart' || active === 'my') && !this.$store.getters.userToken) {
+        this.$router.push({
+          name: 'Login',
+          params: {
+            routerType: 'push'
+          }
+        })
+      } else {
+        this.isComponent = active
+      }
     },
     /**
      * 显示指定tabbar组件

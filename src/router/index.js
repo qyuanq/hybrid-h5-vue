@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Main from '@/views/Main.vue'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -63,24 +64,47 @@ const routes = [
   {
     path: '/userSet',
     name: 'UserSet',
-    component: () => import('@/views/My/UserSet')
+    component: () => import('@/views/My/UserSet'),
+    meta: {
+      requireAuth: true
+    }
   }
 ]
 
 const router = new VueRouter({
   // base: process.env.BASE_URL,
-  routes
-  // scrollBehavior(to, from, savedPosition) {
-  //   // 解决路由跳转页面没有置顶
-  //   if (savedPosition) {
-  //     return savedPosition
-  //   } else {
-  //     return {
-  //       x: 0,
-  //       y: 0
-  //     }
-  //   }
-  // }
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    // 解决路由跳转页面没有置顶
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return {
+        x: 0,
+        y: 0
+      }
+    }
+  }
+})
+// 路由守卫
+router.beforeEach((to, from, next) => {
+  // 需要验证登录的路由
+  if (to.meta.requireAuth) {
+    if (store.getters.userToken) {
+      next()
+    } else {
+      next(
+        {
+          name: 'Login',
+          params: {
+            routerType: 'push'
+          }
+        }
+      )
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

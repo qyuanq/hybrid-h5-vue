@@ -10,13 +10,13 @@
     <div class="register-img">
       <img src="" alt="">
     </div>
-    <van-form @submit="onSubmit">
+    <van-form>
       <van-field
         v-model="tel"
         name="手机号"
         label="手机号"
         placeholder="请输入手机号"
-        :rules="[{ required: true, message: '请填写手机号' }]"
+        :rules="rules.tel"
       />
       <van-field
         v-model="sms"
@@ -24,9 +24,10 @@
         clearable
         label="短信验证码"
         placeholder="请输入短信验证码"
+        :rules="rules.sms"
       >
         <template #button>
-          <van-button size="small" type="primary">发送验证码</van-button>
+          <van-button :disabled="disabled" size="small" type="primary" @click="sendVerifyCode">{{ codeText }}</van-button>
         </template>
       </van-field>
       <van-button round block type="info" native-type="submit" @click="onRegister">注册</van-button>
@@ -46,11 +47,37 @@ export default {
       // 电话
       tel: '',
       // 验证码
-      sms: ''
+      sms: '',
+      // 校验规则
+      rules: {
+        tel: [
+          { required: true, message: '请填写手机号' },
+          { pattern: /[1][3,4,5,6,7,8][0-9]{9}$/, message: '请填写正确手机格式' }
+        ],
+        sms: [{ required: true, message: '请填写验证码' }]
+      },
+      // 倒计时
+      countDown: 0
     }
   },
 
-  computed: {},
+  computed: {
+    // 验证码文字
+    codeText() {
+      if (this.countDown > 0) {
+        return '倒计时' + this.countDown + '秒'
+      }
+      return '发送验证码'
+    },
+    // 发送验证码是否禁用
+    disabled() {
+      // 倒计时>0 手机号为空/手机号不正确
+      if (this.countDown > 0 || !this.tel || !(/[1][3,4,5,6,7,8][0-9]{9}$/.test(this.tel))) {
+        return true
+      }
+      return false
+    }
+  },
 
   methods: {
     /**
@@ -60,11 +87,25 @@ export default {
       this.$router.go(-1)
     },
     /**
+     * 发送短信验证码
+     */
+    sendVerifyCode() {
+      // 判断手机号是否正确
+      // @todo  发送验证码请求
+      this.countDown = 60
+      const timer = setInterval(() => {
+        this.countDown--
+        if (this.countDown === 0) {
+          // 清除定时器
+          clearInterval(timer)
+        }
+      }, 1000)
+    },
+    /**
      * 注册
      */
     onRegister() {
-      // 1.表单验证
-      // 手机号输入格式正确； 验证短信是否正确
+      // @todo 发送验证请求  1.验证短信验证码是否正确
 
       // 2.与native交互
       if (window.androidJSBridge) { // 调用android提供给web端的方法

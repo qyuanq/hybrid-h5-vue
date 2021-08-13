@@ -99,7 +99,7 @@ export default {
   //后退页面时： 即将展示页面的动画
   .fold-right-enter-active{
     animation-name: fold-right-in;
-    animation-duration: .4s;
+    animation-duration: .2s;
   }
   @keyframes fold-right-in{
     0% {

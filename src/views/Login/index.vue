@@ -9,30 +9,29 @@
       <div class="login-content-img">
         <img src="" alt="">
       </div>
-      <van-form class="login-content-form" @submit="onSubmit">
+      <van-form class="login-content-form">
         <van-field
           v-model="country"
           name="country"
           label="国家/地区"
           right-icon="arrow"
-          :rules="[{ required: true, message: '请填写用户名' }]"
         />
         <van-field
           v-model="tel"
           type="tel"
-          name="密码"
+          name="tel"
           label="手机"
           placeholder="请输入手机号"
-          :rules="[{ required: true, message: '请填写手机号' }]"
+          :rules="rules.tel"
         />
         <van-field
           v-if="loginType === 'pawcode'"
           v-model="password"
           type="password"
-          name="密码"
+          name="password"
           label="密码"
           placeholder="请输入密码"
-          :rules="[{ required: true, message: '请填写密码' }]"
+          :rules="rules.password"
         />
         <div class="login-content-form-agree">
           <van-checkbox v-model="checked" />
@@ -41,7 +40,7 @@
             <span class="login-content-form-agree-text-agreement">《隐私政策》</span>
           </p>
         </div>
-        <van-button round block type="info" native-type="submit" class="login-content-form-btn">登录验证码</van-button>
+        <van-button round block :disabled="disabled" type="info" native-type="submit" class="login-content-form-btn" @click="onSubmit">登录验证码</van-button>
       </van-form>
       <div class="login-content-reg">
         <span class="login-content-reg-text" @click="onNewRegister">新用户注册</span>
@@ -73,12 +72,32 @@ export default {
       tel: '',
       // 登陆方式 短信验证码smscode 密码 pawcode
       loginType: 'smscode',
+      // 同意
       checked: true,
-      password: ''
+      // 密码
+      password: '',
+      // 验证规则
+      rules: {
+        tel: [
+          { required: true, message: '请填写手机号' },
+          { pattern: /[1][3,4,5,6,7,8][0-9]{9}$/, message: '请填写正确手机格式' }
+        ],
+        password: [
+          { required: true, message: '请填写密码' }
+        ]
+      }
     }
   },
 
-  computed: {},
+  computed: {
+    // 是否禁用按钮
+    disabled() {
+      if (!(/[1][3,4,5,6,7,8][0-9]{9}$/.test(this.tel))) {
+        return true
+      }
+      return false
+    }
+  },
 
   methods: {
     /**
@@ -86,8 +105,13 @@ export default {
      */
     onSubmit() {
       // 1.表单验证
+      if (!this.checked) {
+        this.$toast.fail('请勾选同意')
+        return false
+      }
+      // @todo   2.发送请求短信验证
 
-      // 2.与native交互
+      // 3.与native交互
       if (window.androidJSBridge) {
         this.onLoginToAndroid()
       } else if (window.webkit) {
@@ -185,7 +209,10 @@ export default {
      */
     onNewRegister() {
       this.$router.push({
-        name: 'Register'
+        name: 'Register',
+        params: {
+          routerType: 'push'
+        }
       })
     }
     /**

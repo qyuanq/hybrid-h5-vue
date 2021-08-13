@@ -1,29 +1,32 @@
 <template>
+  <!-- 下拉刷新 -->
   <div ref="home" class="home" @scroll="onScrollChange">
-    <div class="home-header">
-      <nav-bar :fixed="true" class="home-nav-bar z-index-4" :nav-bar-style="navBarStyle" :border="false">
-        <template v-slot:left>
-          <svg-icon icon-class="menu" />
-        </template>
-        <template v-slot:title>
-          <van-search v-model="keywords" class="van-search" placeholder="请输入搜索关键词" />
-        </template>
-        <template v-slot:right>
-          <svg-icon icon-class="zixun" class-name="zixun" />
-        </template>
-      </nav-bar>
-      <div class="home-header-bg" />
-    </div>
-    <div class="home-context">
-      <swiper :swiper-height="swiperHeight" class="swiper" />
-      <nav-box />
-      <seconds />
-      <Activity class="activity-ping-gou-jie">
-        <img src="@img/haoHuoQiang.gif">
-      </Activity>
-      <Goods class="home-goods" />
-      <van-divider>我是有底线的</van-divider>
-    </div>
+    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+      <div class="home-header">
+        <nav-bar :fixed="true" class="home-nav-bar z-index-4" :nav-bar-style="navBarStyle" :border="false">
+          <template v-slot:left>
+            <svg-icon icon-class="menu" />
+          </template>
+          <template v-slot:title>
+            <van-search v-model="keywords" class="van-search" placeholder="请输入搜索关键词" />
+          </template>
+          <template v-slot:right>
+            <svg-icon icon-class="zixun" class-name="zixun" />
+          </template>
+        </nav-bar>
+        <div :class="['home-header-bg',{'home-header-bg-iphonex':$store.state.isIphoneX}]" />
+      </div>
+      <div class="home-context">
+        <swiper :swiper-height="swiperHeight" :class="['swiper',{'swiper-iphonex':$store.state.isIphoneX}]" />
+        <nav-box />
+        <seconds />
+        <Activity class="activity-ping-gou-jie">
+          <img src="@img/haoHuoQiang.gif">
+        </Activity>
+        <Goods ref="goods" class="home-goods" />
+        <van-divider>我是有底线的</van-divider>
+      </div>
+    </van-pull-refresh>
   </div>
 </template>
 
@@ -54,7 +57,9 @@ export default {
       ANCHOR_SCROLL_TOP: 160,
       navBarStyle: {
         backgroundColor: 'transparent'
-      }
+      },
+      // 下拉刷新
+      isLoading: false
     }
   },
 
@@ -77,6 +82,11 @@ export default {
       // 背景透明度
       const opacity = this.scrollTopValue / this.ANCHOR_SCROLL_TOP
       this.navBarStyle.backgroundColor = 'rgba(200,37,25,' + opacity + ')'
+    },
+    // 下拉刷新
+    async onRefresh() {
+      // await this.$refs.goods.initData()
+      this.isLoading = false
     }
   }
 }
@@ -87,7 +97,8 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  overflow-y: auto;
+  // overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding-bottom: calc(100px + constant(safe-area-inset-bottom));
   padding-bottom: calc(100px + env(safe-area-inset-bottom));
   &-nav-bar{
@@ -128,16 +139,20 @@ export default {
       top: 0;
       left: -25%;
       height: 268px + @statusBarHeight;
-      height: calc(268px + @statusBarHeight + constant(safe-area-inset-top));
-      height: calc(268px + @statusBarHeight + env(safe-area-inset-top));
+      &-iphonex{
+        height: calc(268px + constant(safe-area-inset-top));
+        height: calc(268px + env(safe-area-inset-top));
+      }
     }
   }
   &-context{
     padding: 0 20px;
     .swiper{
         margin-top: @marginSize + 92px + @statusBarHeight;
-        margin-top: calc(@marginSize + 92px  + constant(safe-area-inset-top));
-        margin-top: calc(@marginSize + 92px  + env(safe-area-inset-top));
+        &-iphonex{
+          margin-top: calc(@marginSize + 92px  + constant(safe-area-inset-top));
+          margin-top: calc(@marginSize + 92px  + env(safe-area-inset-top));
+        }
       ::v-deep{
         .van-swipe__indicator{
           width: 12px;
