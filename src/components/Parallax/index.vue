@@ -2,7 +2,7 @@
   @name: 滚动视差组件
 -->
 <template>
-  <div class="parallax" @scroll="onScrollChange">
+  <div ref="parallax" class="parallax" @scroll="onScrollChange">
     <!-- 缓慢移动区 -->
     <div class="parallax-slow" :style="{top:slowTop}">
       <slot name="parallax-slow" />
@@ -35,7 +35,9 @@ export default {
       return (this.parallaxScroll - this.parallaxScroll / this.SPEED_DIFF) + 'px'
     }
   },
-
+  activated() {
+    this.$refs.parallax.scrollTop = this.parallaxScroll
+  },
   methods: {
     /**
      * 滚动改变
@@ -54,6 +56,7 @@ export default {
   height: 100%;
   overflow: hidden;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   &-slow{
     position: relative;
   }

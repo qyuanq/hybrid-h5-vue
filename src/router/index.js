@@ -76,14 +76,14 @@ const router = new VueRouter({
   routes,
   scrollBehavior(to, from, savedPosition) {
     // 解决路由跳转页面没有置顶
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      return {
-        x: 0,
-        y: 0
-      }
-    }
+    // if (savedPosition) {
+    //   return savedPosition
+    // } else {
+    //   return {
+    //     x: 0,
+    //     y: 0
+    //   }
+    // }
   }
 })
 // 路由守卫

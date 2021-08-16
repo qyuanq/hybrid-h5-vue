@@ -1,72 +1,74 @@
 <template>
   <div ref="my" class="my" @scroll="changeScroll">
-    <nav-bar
-      :nav-bar-style="navBarStyle"
-      :fixed="true"
-      title="个人中心"
-      right-text="设置"
-      @click-right="onSet"
-    />
-    <div class="my-content">
-      <div :class="['my-content-header',{'my-content-header-iphoneX':$store.state.isIphoneX}]">
-        <div class="user-info">
-          <div class="user-info-content">
-            <div class="user-info-content-icon">
-              <img src="https://img11.360buyimg.com/jdphoto/s120x120_jfs/t21160/90/706848746/2813/d1060df5/5b163ef9N4a3d7aa6.png" alt="用户头像">
-            </div>
-            <div class="user-info-content-desc">
-              <div class="desc-name">
-                jd_79a14cabc6e8d
+    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+      <nav-bar
+        :nav-bar-style="navBarStyle"
+        :fixed="true"
+        title="个人中心"
+        right-text="设置"
+        @click-right="onSet"
+      />
+      <div class="my-content">
+        <div :class="['my-content-header',{'my-content-header-iphoneX':$store.state.isIphoneX}]">
+          <div class="user-info">
+            <div class="user-info-content">
+              <div class="user-info-content-icon">
+                <img src="https://img11.360buyimg.com/jdphoto/s120x120_jfs/t21160/90/706848746/2813/d1060df5/5b163ef9N4a3d7aa6.png" alt="用户头像">
               </div>
-              <div class="desc-label">
-                <span class="desc-label-text">京享值</span>
-                <span class="desc-label-text">小白信用97.0></span>
+              <div class="user-info-content-desc">
+                <div class="desc-name">
+                  jd_79a14cabc6e8d
+                </div>
+                <div class="desc-label">
+                  <span class="desc-label-text">京享值</span>
+                  <span class="desc-label-text">小白信用97.0></span>
+                </div>
               </div>
             </div>
+            <div class="user-info-set" @click="onSet">
+              <svg-icon icon-class="setting" class-name="icon" />
+            </div>
           </div>
-          <div class="user-info-set" @click="onSet">
-            <svg-icon icon-class="setting" class-name="icon" />
+          <div class="xlist_group">
+            <div class="xlist_group-item">
+              <p class="xlist_group-item-num">6</p>
+              <p class="xlist_group-item-text">商品收藏</p>
+            </div>
+            <div class="xlist_group-item">
+              <p class="xlist_group-item-num">22</p>
+              <p class="xlist_group-item-text">店铺收藏</p>
+            </div>
+            <div class="xlist_group-item">
+              <p class="xlist_group-item-num">2</p>
+              <p class="xlist_group-item-text">我的足迹</p>
+            </div>
           </div>
         </div>
-        <div class="xlist_group">
-          <div class="xlist_group-item">
-            <p class="xlist_group-item-num">6</p>
-            <p class="xlist_group-item-text">商品收藏</p>
+        <div class="my-content-order">
+          <div class="order-group">
+            <div class="order-group-item">
+              <svg-icon icon-class="dfk" class-name="order-group-item-icon" />
+              <span class="order-group-item-text">待付款</span>
+            </div>
+            <div class="order-group-item">
+              <svg-icon icon-class="dsh" class-name="order-group-item-icon" />
+              <span class="order-group-item-text">待收货</span>
+            </div>
+            <div class="order-group-item">
+              <svg-icon icon-class="sh" class-name="order-group-item-icon" />
+              <span class="order-group-item-text">售后</span>
+            </div>
+            <div class="order-group-item">
+              <svg-icon icon-class="dd" class-name="order-group-item-icon" />
+              <span class="order-group-item-text">全部订单</span>
+            </div>
           </div>
-          <div class="xlist_group-item">
-            <p class="xlist_group-item-num">22</p>
-            <p class="xlist_group-item-text">店铺收藏</p>
-          </div>
-          <div class="xlist_group-item">
-            <p class="xlist_group-item-num">2</p>
-            <p class="xlist_group-item-text">我的足迹</p>
-          </div>
+          <receiving-info />
         </div>
+        <van-divider>为您推荐</van-divider>
+        <goods layout-type="2" />
       </div>
-      <div class="my-content-order">
-        <div class="order-group">
-          <div class="order-group-item">
-            <svg-icon icon-class="dfk" class-name="order-group-item-icon" />
-            <span class="order-group-item-text">待付款</span>
-          </div>
-          <div class="order-group-item">
-            <svg-icon icon-class="dsh" class-name="order-group-item-icon" />
-            <span class="order-group-item-text">待收货</span>
-          </div>
-          <div class="order-group-item">
-            <svg-icon icon-class="sh" class-name="order-group-item-icon" />
-            <span class="order-group-item-text">售后</span>
-          </div>
-          <div class="order-group-item">
-            <svg-icon icon-class="dd" class-name="order-group-item-icon" />
-            <span class="order-group-item-text">全部订单</span>
-          </div>
-        </div>
-        <receiving-info />
-      </div>
-      <van-divider>为您推荐</van-divider>
-      <goods layout-type="2" />
-    </div>
+    </van-pull-refresh>
   </div>
 </template>
 
@@ -86,7 +88,9 @@ export default {
       // 滚动距离
       scrollTopValue: -1,
       // 滚动锚点值
-      ANCHOR_SCROLL_TOP: 15
+      ANCHOR_SCROLL_TOP: 15,
+      // 上拉加载
+      isLoading: false
     }
   },
 
@@ -94,7 +98,7 @@ export default {
     navBarStyle() {
       return {
         left: 0,
-        top: this.scrollTopValue >= this.ANCHOR_SCROLL_TOP ? 0 : '-110px'
+        top: this.scrollTopValue >= this.ANCHOR_SCROLL_TOP ? 0 : '-1110px'
       }
     }
   },
@@ -121,6 +125,13 @@ export default {
      */
     changeScroll(event) {
       this.scrollTopValue = event.target.scrollTop
+    },
+    /**
+     * 上拉刷新
+     */
+    onRefresh() {
+      // @todo 发起请求
+      this.isLoading = false
     }
   }
 }

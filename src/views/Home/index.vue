@@ -1,7 +1,8 @@
 <template>
-  <!-- 下拉刷新 -->
   <div ref="home" class="home" @scroll="onScrollChange">
+    <!-- 下拉刷新 -->
     <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+      <!-- <skeleton v-show="! isShowLoading" /> -->
       <div class="home-header">
         <nav-bar :fixed="true" class="home-nav-bar z-index-4" :nav-bar-style="navBarStyle" :border="false">
           <template v-slot:left>
@@ -27,6 +28,7 @@
         <van-divider>我是有底线的</van-divider>
       </div>
     </van-pull-refresh>
+
   </div>
 </template>
 
@@ -37,6 +39,7 @@ import NavBox from './components/NavBox'
 import Seconds from './components/Seconds'
 import Activity from '@c/Activity'
 import Goods from '@c/GoodList/Goods'
+// import Skeleton from './components/Skeleton'
 export default {
   name: 'Home',
   components: {
@@ -46,9 +49,12 @@ export default {
     Seconds,
     Activity,
     Goods
+    // Skeleton
   },
   data() {
     return {
+      // 骨架屏展示
+      isShowLoading: false,
       swiperHeight: window.isIphoneX ? '228px' : '184px',
       keywords: '',
       // 记录页面滚动值
@@ -68,7 +74,9 @@ export default {
     this.$refs.home.scrollTop = this.scrollTopValue
     console.log(this.scrollTopValue)
   },
-
+  deactivated() {
+    console.log(document.querySelector('.home').scrollTop)
+  },
   methods: {
     /**
      * 监听页面滚动条
@@ -85,7 +93,7 @@ export default {
     },
     // 下拉刷新
     async onRefresh() {
-      // await this.$refs.goods.initData()
+      await this.$refs.goods.initData()
       this.isLoading = false
     }
   }
@@ -95,12 +103,13 @@ export default {
 <style lang='less' scoped>
 .home{
   width: 100%;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
-  // overflow-y: auto;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding-bottom: calc(100px + constant(safe-area-inset-bottom));
   padding-bottom: calc(100px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
   &-nav-bar{
     ::v-deep{
       // .van-nav-bar__content{
@@ -130,6 +139,7 @@ export default {
   &-header{
     position: relative;
     width: 100%;
+    height: 1px;
     &-bg{
       width: 150%;
       background-image: linear-gradient(0deg,#f1503b,#c82519 50%);

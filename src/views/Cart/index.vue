@@ -13,49 +13,50 @@
         编辑
       </template>
     </nav-bar>
-
-    <!-- 购物车没内容 -->
-    <div class="cart-no">
-      <!-- 购物车没登录 -->
-      <div class="cart-no-login" />
-    </div>
-
-    <!-- 购物车有内容 -->
-    <div class="cart-have">
-      <!-- 商品列表 -->
-      <div class="cart-have-list">
-        <div v-for="item in cartData" :key="item.id" class="cart-have-list-item">
-          <!-- 这里使用复选框或者svg -->
-          <van-checkbox v-model="item.checked" checked-color="#ee0a24" />
-          <goods-info :goods="item" class="cart-have-list-item-goods" />
-        </div>
+    <van-pull-refresh v-model="isLoading" style="min-height: 100vh;" @refresh="onRefresh">
+      <!-- 购物车没内容 -->
+      <div class="cart-no">
+        <!-- 购物车没登录 -->
+        <div class="cart-no-login" />
       </div>
 
-      <!-- 底部结算框 -->
-      <div class="cart-have-bar">
-        <van-submit-bar
-          v-if="!isEdit"
-          :disabled="disabled"
-          :price="totalPrice"
-          :button-text="'结算 ' + totalCount"
-          :safe-area-inset-bottom="false"
-          @submit="onSubmit"
-        >
-          <van-checkbox :value="isSelectAll" checked-color="#ee0a24" @click="changeChecked">全选</van-checkbox>
+      <!-- 购物车有内容 -->
+      <div class="cart-have">
+        <!-- 商品列表 -->
+        <div class="cart-have-list">
+          <div v-for="item in cartData" :key="item.id" class="cart-have-list-item">
+            <!-- 这里使用复选框或者svg -->
+            <van-checkbox v-model="item.checked" checked-color="#ee0a24" />
+            <goods-info :goods="item" class="cart-have-list-item-goods" />
+          </div>
+        </div>
+
+      </div>
+    </van-pull-refresh>
+    <!-- 底部结算框 -->
+    <div class="cart-have-bar">
+      <van-submit-bar
+        v-if="!isEdit"
+        :disabled="disabled"
+        :price="totalPrice"
+        :button-text="'结算 ' + totalCount"
+        :safe-area-inset-bottom="false"
+        @submit="onSubmit"
+      >
+        <van-checkbox :value="isSelectAll" checked-color="#ee0a24" @click="changeChecked">全选</van-checkbox>
         <!-- <template #tip>
           你的收货地址不支持同城送, <span @click="onClickEditAddress">修改地址</span>
         </template> -->
-        </van-submit-bar>
-        <div v-else class="cart-have-bar-edit">
-          <van-checkbox :value="isSelectAll" checked-color="#ee0a24" @click="changeChecked">全选</van-checkbox>
-          <div class="cart-have-bar-edit-btn">
-            <div class="cart-have-bar-edit-btn-clean">
-              <svg-icon icon-class="delete" />
-              快速清理
-            </div>
-            <button class="cart-have-bar-edit-btn-collage">移入收藏夹</button>
-            <button class="cart-have-bar-edit-btn-delete" @click="onDelete">删除</button>
+      </van-submit-bar>
+      <div v-else class="cart-have-bar-edit">
+        <van-checkbox :value="isSelectAll" checked-color="#ee0a24" @click="changeChecked">全选</van-checkbox>
+        <div class="cart-have-bar-edit-btn">
+          <div class="cart-have-bar-edit-btn-clean">
+            <svg-icon icon-class="delete" />
+            快速清理
           </div>
+          <button class="cart-have-bar-edit-btn-collage">移入收藏夹</button>
+          <button class="cart-have-bar-edit-btn-delete" @click="onDelete">删除</button>
         </div>
       </div>
     </div>
@@ -75,7 +76,9 @@ export default {
   data() {
     return {
       // 编辑那妞
-      isEdit: false
+      isEdit: false,
+      // 上拉刷新
+      isLoading: false
     }
   },
 
@@ -141,6 +144,12 @@ export default {
         .catch(() => {
           this.$dialog.close()
         })
+    },
+    /**
+     * 上拉刷新
+     */
+    onRefresh() {
+      this.isLoading = false
     }
   }
 }
@@ -149,6 +158,7 @@ export default {
 <style lang='less' scoped>
 .cart{
   width: 100%;
+  height: 100vh;
   &-no{
 
   }

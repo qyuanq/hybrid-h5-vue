@@ -169,6 +169,7 @@ export default {
 </script>
 <style lang='less' scoped>
 .order-fill{
+  position: absolute;
   &-contact{
     margin-top: @statusBarHeight + 92px;
   }

@@ -24,70 +24,72 @@
         <p class="good-detail-navbar-title" :style="{opacity: navBarOpactity}">商品列表</p>
       </template>
     </nav-bar>
-
-    <parallax @onScrollChange="onScrollChange">
-      <template v-slot:parallax-slow>
-        <!-- 轮播 -->
-        <van-swipe class="good-detail-swiper" @change="onChangeSwiper">
-          <van-swipe-item v-for="(image,index) in images" :key="index">
-            <div class="my-swiper-item">
-              <img v-lazy="image" class="my-swipe-img">
+    <!-- 用于保存滚动历史 -->
+    <keep-alive>
+      <parallax @onScrollChange="onScrollChange">
+        <template v-slot:parallax-slow>
+          <!-- 轮播 -->
+          <van-swipe class="good-detail-swiper" @change="onChangeSwiper">
+            <van-swipe-item v-for="(image,index) in images" :key="index">
+              <div class="my-swiper-item">
+                <img v-lazy="image" class="my-swipe-img">
+              </div>
+            </van-swipe-item>
+            <template #indicator>
+              <div class="custom-indicator">{{ current + 1 }} / 4</div>
+            </template>
+          </van-swipe>
+        </template>
+        <template>
+          <div class="good-detail-content">
+            <!-- 秒杀 -->
+            <!-- 商品描述 -->
+            <div class="good-detail-desc">
+              <p class="good-detail-desc-name text-line-2">{{ goodInfo.desc }}</p>
+              <div class="good-detail-desc-wrap">
+                <div class="good-detail-desc-wrap-item">
+                  <span>快递：</span>
+                  <span>{{ 1 }}</span>
+                </div>
+                <div class="good-detail-desc-wrap-item">
+                  <span>月销量：</span>
+                  <span>{{ 1 }}件</span>
+                </div>
+                <div class="good-detail-desc-wrap-item">
+                  <span>上海</span>
+                </div>
+              </div>
             </div>
-          </van-swipe-item>
-          <template #indicator>
-            <div class="custom-indicator">{{ current + 1 }} / 4</div>
-          </template>
-        </van-swipe>
-      </template>
-      <template>
-        <div class="good-detail-content">
-          <!-- 秒杀 -->
-          <!-- 商品描述 -->
-          <div class="good-detail-desc">
-            <p class="good-detail-desc-name text-line-2">{{ goodInfo.desc }}</p>
-            <div class="good-detail-desc-wrap">
-              <div class="good-detail-desc-wrap-item">
-                <span>快递：</span>
-                <span>{{ 1 }}</span>
-              </div>
-              <div class="good-detail-desc-wrap-item">
-                <span>月销量：</span>
-                <span>{{ 1 }}件</span>
-              </div>
-              <div class="good-detail-desc-wrap-item">
-                <span>上海</span>
-              </div>
+            <!-- 选择 -->
+            <div class="good-detail-option">
+              <div class="good-detail-option-sku">
+                <span class="good-detail-option-sku-label">已选</span>
+                <p class="good-detail-option-sku-content">
+                  xxx
+                </p>
+                <svg-icon icon-class="go" /></div>
+              <div class="good-detail-option-sku">
+                <span class="good-detail-option-sku-label">送至</span>
+                <p class="good-detail-option-sku-content">
+                  xxx
+                </p>
+                <svg-icon icon-class="go" /></div>
+            </div>
+            <!-- 评价 -->
+            <!-- 详情 -->
+            <div class="good-detail-images">
+              <img
+                v-for="item in goodInfo.detailImgs"
+                :key="item"
+                :src="item"
+                alt="详情图片"
+                class="good-detail-images-img"
+              >
             </div>
           </div>
-          <!-- 选择 -->
-          <div class="good-detail-option">
-            <div class="good-detail-option-sku">
-              <span class="good-detail-option-sku-label">已选</span>
-              <p class="good-detail-option-sku-content">
-                xxx
-              </p>
-              <svg-icon icon-class="go" /></div>
-            <div class="good-detail-option-sku">
-              <span class="good-detail-option-sku-label">送至</span>
-              <p class="good-detail-option-sku-content">
-                xxx
-              </p>
-              <svg-icon icon-class="go" /></div>
-          </div>
-          <!-- 评价 -->
-          <!-- 详情 -->
-          <div class="good-detail-images">
-            <img
-              v-for="item in goodInfo.detailImgs"
-              :key="item"
-              :src="item"
-              alt="详情图片"
-              class="good-detail-images-img"
-            >
-          </div>
-        </div>
-      </template>
-    </parallax>
+        </template>
+      </parallax>
+    </keep-alive>
 
     <!-- 商品导航 -->
     <div class="good-detail-action">
@@ -202,6 +204,7 @@ export default {
   height: 100%;
   padding-bottom: calc(100px + constant(safe-area-inset-bottom));
   padding-bottom: calc(100px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
   &-navbar{
     &-icon{
       position:absolute;
