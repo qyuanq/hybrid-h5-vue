@@ -2,31 +2,40 @@
   @name: 商品展示组件
 -->
 <template>
-  <div :class="['goods',layoutClass]" :style="{height: goodsViewHeight}">
-    <div
-      v-for="(item,index) in sortGoodsData"
-      :key="item.id"
-      ref="goodsItem"
-      :class="['goods-item',layoutItemClass]"
-      :style="goodsItemStyles[index]"
-      @click="onGoodDetail(item)"
-    >
-      <img :src="item.picture" alt="" class="goods-item-img" :style="imgStyles[index]">
-      <div class="goods-item-desc">
-        <p class="goods-item-desc-name">
-          <span class="text-line-2">
-            <van-tag v-if="item.proprietary" type="danger">自营</van-tag>
-            <van-tag v-if="item.stock === 0" color="#999">缺货</van-tag>
-            {{ item.desc }}
-          </span>
-        </p>
-        <div class="goods-item-desc-data">
-          <p class="goods-item-desc-data-price"><em>￥</em>{{ item.price | priceValue }}</p>
-          <p class="goods-item-desc-data-volume">销量:{{ item.volume }}</p>
+  <van-list
+    v-model="pullLoading"
+    :finished="finished"
+    finished-text="没有更多了"
+    offset="100"
+    :immediate-check="false"
+    @load="onLoad"
+  >
+    <div :class="['goods',layoutClass]" :style="{height: goodsViewHeight}">
+      <div
+        v-for="(item,index) in sortGoodsData"
+        :key="item.id"
+        ref="goodsItem"
+        :class="['goods-item',layoutItemClass]"
+        :style="goodsItemStyles[index]"
+        @click="onGoodDetail(item)"
+      >
+        <img :src="item.picture" alt="" class="goods-item-img" :style="imgStyles[index]">
+        <div class="goods-item-desc">
+          <p class="goods-item-desc-name">
+            <span class="text-line-2">
+              <van-tag v-if="item.proprietary" type="danger">自营</van-tag>
+              <van-tag v-if="item.stock === 0" color="#999">缺货</van-tag>
+              {{ item.desc }}
+            </span>
+          </p>
+          <div class="goods-item-desc-data">
+            <p class="goods-item-desc-data-price"><em>￥</em>{{ item.price | priceValue }}</p>
+            <p class="goods-item-desc-data-volume">销量:{{ item.volume }}</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </van-list>
 </template>
 
 <script>
@@ -47,12 +56,15 @@ export default {
     sort: {
       type: String,
       default: '1'
+    },
+    // 请求地址
+    apiGoods: {
+      type: String,
+      default: ''
     }
   },
   data() {
     return {
-      // 数据源
-      dataSource: [],
       // 最大高度
       MAX_IMG_HEIGHT: 353,
       // 最小高度
@@ -71,7 +83,25 @@ export default {
       // 瀑布流布局 goods-waterfall  goods-waterfall-item
       layoutClass: 'goods-list',
       layoutItemClass: 'goods-list-item',
-      sortGoodsData: []
+      sortGoodsData: [],
+      // 上拉加载
+      pullLoading: false,
+      // 请求第几页
+      page: 1,
+      // 每页请求的数量
+      pageSize: 10,
+      // 商品数据源
+      dataSource: []
+    }
+  },
+
+  computed: {
+    // 上拉加载完成
+    finished() {
+      if (this.dataSource.length > 0 && this.dataSource.length === this.total) {
+        return true
+      }
+      return false
     }
   },
 
@@ -81,9 +111,18 @@ export default {
     },
     sort() {
       this.setSortGoodsData()
+    },
+    dataSource: {
+      handler(n, o) {
+        this.dataSource = n
+        this.sortGoodsData = this.dataSource.slice(0)
+        this.setSortGoodsData()
+        this.initLayout()
+      },
+      deep: true,
+      immediate: true
     }
   },
-
   async created() {
     await this.initData()
   },
@@ -93,8 +132,9 @@ export default {
        * 获取数据
        */
     async initData() {
-      const res = await this.$axios.get('/api/goods')
+      const res = await this.$axios.get(this.apiGoods)
       this.dataSource = res.data
+      this.total = this.dataSource.length * 3
       // 商品排序
       this.setSortGoodsData()
       // 设置布局
@@ -266,6 +306,22 @@ export default {
           routerType: 'push'
         }
       })
+    },
+    // 上拉加载加载数据
+    async onLoad() {
+      this.page++
+      const data = {
+        page: this.page,
+        pageSize: this.pageSize
+      }
+      const res = await this.$axios.post(
+        this.apiGoods,
+        data
+      )
+      if (res.code === 0) {
+        this.dataSource = this.dataSource.concat(res.data)
+        this.pullLoading = false
+      }
     }
   }
 }
@@ -275,7 +331,6 @@ export default {
 .goods{
     position: relative;
     margin-top: 8PX;
-    // margin-bottom: 44PX;
     overflow: hidden;
     overflow-y: auto;
     &-item{

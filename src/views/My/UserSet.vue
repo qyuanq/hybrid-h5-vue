@@ -171,6 +171,9 @@ export default {
 </script>
 <style lang='less' scoped>
 .user-set{
+  width: 100%;
+  height: 100%;
+  position: absolute;
   &-info{
     display: flex;
     justify-content: space-between;

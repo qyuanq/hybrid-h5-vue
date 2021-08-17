@@ -24,8 +24,8 @@
         <Activity class="activity-ping-gou-jie">
           <img src="@img/haoHuoQiang.gif">
         </Activity>
-        <Goods ref="goods" class="home-goods" />
-        <van-divider>我是有底线的</van-divider>
+        <Goods ref="goods" class="home-goods" api-goods="/api/goods" />
+        <!-- <van-divider>我是有底线的</van-divider> -->
       </div>
     </van-pull-refresh>
 
@@ -40,6 +40,7 @@ import Seconds from './components/Seconds'
 import Activity from '@c/Activity'
 import Goods from '@c/GoodList/Goods'
 // import Skeleton from './components/Skeleton'
+import _ from 'lodash'
 export default {
   name: 'Home',
   components: {
@@ -72,11 +73,8 @@ export default {
   activated() {
     // 组件被激活时，页面滚动值为最后滚动的位置
     this.$refs.home.scrollTop = this.scrollTopValue
-    console.log(this.scrollTopValue)
   },
-  deactivated() {
-    console.log(document.querySelector('.home').scrollTop)
-  },
+
   methods: {
     /**
      * 监听页面滚动条
@@ -85,12 +83,12 @@ export default {
      *    当前滚动距离 / 锚点值 = nav-bar背景透明度 opacity
      * 3.opacity > 1,当前滚动的距离已经超过了锚点值，当前nav-bar变为高亮状态值
      */
-    onScrollChange(event) {
+    onScrollChange: _.throttle(function(event) {
       this.scrollTopValue = event.target.scrollTop
       // 背景透明度
       const opacity = this.scrollTopValue / this.ANCHOR_SCROLL_TOP
       this.navBarStyle.backgroundColor = 'rgba(200,37,25,' + opacity + ')'
-    },
+    }, 300),
     // 下拉刷新
     async onRefresh() {
       await this.$refs.goods.initData()

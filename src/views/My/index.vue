@@ -25,8 +25,8 @@
                 </div>
               </div>
             </div>
-            <div class="user-info-set" @click="onSet">
-              <svg-icon icon-class="setting" class-name="icon" />
+            <div class="user-info-set">
+              <svg-icon icon-class="setting" class-name="icon" @click="onSet" />
             </div>
           </div>
           <div class="xlist_group">
@@ -66,7 +66,10 @@
           <receiving-info />
         </div>
         <van-divider>为您推荐</van-divider>
-        <goods layout-type="2" />
+        <goods
+          layout-type="2"
+          api-goods="/api/goods"
+        />
       </div>
     </van-pull-refresh>
   </div>

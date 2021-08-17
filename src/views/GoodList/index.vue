@@ -12,7 +12,7 @@
     </nav-bar>
     <DropdownMenu :options-datas="optionsDatas" @optionsChange="optionsChange" />
     <div class="good-list-page-content">
-      <goods :layout-type="layoutType.type" :sort="sortId" />
+      <goods :layout-type="layoutType.type" :sort="sortId" api-goods="/api/goods" />
     </div>
   </div>
 </template>
