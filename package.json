@@ -9,8 +9,12 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@better-scroll/core": "^2.4.2",
+    "@better-scroll/pull-down": "^2.4.2",
+    "@better-scroll/pull-up": "^2.4.2",
     "amfe-flexible": "^2.2.1",
     "axios": "^0.21.1",
+    "better-scroll": "^2.4.2",
     "core-js": "^3.6.5",
     "lodash": "^4.17.21",
     "normalize.css": "^8.0.1",

@@ -121,12 +121,16 @@ export default {
     .van-search{
       width: 100%;
       box-sizing: border-box;
-      height: 30PX;
-      border-radius: @radiusSize;
+      padding: 0;
+      border-radius: 80px;
+      overflow: hidden;
       .van-search__content{
-        padding-left: 0;
+        padding-right: 24px;
       }
       .van-cell{
+        height: 60px;
+        line-height: 60px;
+        box-sizing: border-box;
         padding: 0;
       }
     }
