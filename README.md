@@ -29,3 +29,5 @@ npm run lint
     在mounted中利用$nextTick
     判断是否存在bs实例，不存在就创建，存在就刷新
     当数据发生变化，刷新bs 重新计算 不然会滚动失效
+    3.（1） ScrollCategory.vue 该组件一次性获取分类数据，左右滚动联动
+      （2） ScrollContent.vue 该组件分类获取数据，切换分类一请求，上拉加载分页数据

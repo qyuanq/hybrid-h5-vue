@@ -39,11 +39,7 @@
 
 <script>
 import BScroll from '@better-scroll/core'
-import PullUp from '@better-scroll/pull-up'
-import PullDown from '@better-scroll/pull-down'
 
-BScroll.use(PullUp)
-BScroll.use(PullDown)
 export default {
   components: {},
   props: {
@@ -81,6 +77,7 @@ export default {
       }
       return this.categoryMenu[this.cateActive].id
     },
+    // 滚动关联选中菜单项索引
     currentIndex() {
       for (let i = 0; i < this.listHeight.length; i++) {
         const height1 = this.listHeight[i]
@@ -131,51 +128,28 @@ export default {
 
       if (!this.contentWrapper) {
         this.contentWrapper = new BScroll(this.$refs.contentWrapper, {
-          pullUpLoad: { // 下拉加载
-            threshold: 50
-          },
-          pullDownRefresh: true, // 上拉刷新
           probeType: 3,
           click: true,
           scrollY: true,
           tap: true,
           mouseWheel: true
         })
+
+        // 监听内容区域滚动
+        this.contentWrapper.on('scroll', (pos) => {
+          this.scrollY = Math.abs(Math.round(pos.y))
+        })
       } else {
         this.contentWrapper.refresh()
       }
-
-      // 监听上拉加载
-      // this.contentWrapper.on('pullingUp', () => {
-      //   if (this.cateActive === this.categoryMenu.length - 1) {
-      //     this.contentWrapper.closePullUp()
-      //     this.calculateHeight()
-      //     return
-      //   }
-      //   this.cateActive++
-      //   this.pullUpLoad()
-      //   this.contentWrapper.finishPullUp()
-      // })
-
       // 获取内容高度
       this.calculateHeight()
-      // 监听内容区域滚动
-      this.contentWrapper.on('scroll', (pos) => {
-        this.scrollY = Math.abs(Math.round(pos.y))
-        console.log(this.scrollY, this.currentIndex)
-      })
-
-      // 监听下拉刷新
-      // this.contentWrapper.on('pullingDown', () => {
-      //   // this.cateActive--
-      //   this.pullingDown()
-      //   this.contentWrapper.finishPullDown()
-      // })
     },
     // 计算内容各个模块高度列表
     calculateHeight() {
       let height = 0
       const listHeight = this.$refs.content
+      if (!listHeight) return
       listHeight.forEach(item => {
         height += item.clientHeight
         this.listHeight.push(height)
@@ -190,14 +164,6 @@ export default {
       // 滚动到对应内容位置
       const elC = this.$refs.content[this.cateActive]
       this.contentWrapper.scrollToElement(elC, 300)
-    },
-    // 上拉加载
-    pullUpLoad() {
-      this.$emit('pullUpLoad', this.cateId)
-    },
-    // 下拉刷新
-    pullingDown() {
-      console.log('上拉刷新')
     }
   }
 }

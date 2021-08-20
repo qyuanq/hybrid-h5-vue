@@ -12,35 +12,33 @@
       </template>
     </nav-bar>
     <div :class="['category-content',{'category-content-iphonex': $store.state.isIphoneX}]">
-      <!-- <scroll-category
+      <scroll-category
         ref="scrollCategory"
         :category-menu="categoryMenu"
         :category-good="categoryGood"
-        @pullUpLoad="pullUpLoad"
-      >
-      </scroll-category> -->
+      />
 
-      <scroll-content
+      <!-- <scroll-content
         :category-menu="categoryMenu"
         :category-good="categoryGood"
         :total="total"
         @changeCate="changeCate"
         @pullUpLoad="pullUpLoad"
-      />
+      /> -->
     </div>
   </div>
 </template>
 
 <script>
 import NavBar from '@c/NavBar'
-// import ScrollCategory from './components/ScrollCategory'
-import ScrollContent from './components/ScrollContent.vue'
+import ScrollCategory from './components/ScrollCategory'
+// import ScrollContent from './components/ScrollContent.vue'
 export default {
   name: 'Category',
   components: {
     NavBar,
-    // ScrollCategory,
-    ScrollContent
+    ScrollCategory
+    // ScrollContent
   },
   data() {
     return {
@@ -50,7 +48,7 @@ export default {
       categoryMenu: [],
       // 分类商品
       categoryGood: [],
-      // 商品总数
+      // 商品总数，基于ScrollContent组件
       total: 0
     }
   },
@@ -65,8 +63,11 @@ export default {
     async initData() {
       const res = await Promise.all([
         this.$axios.get('/api/category'),
-        // this.$axios.get('/api/category/goods/1')
-        this.$axios.get('/api/category/1')
+        // 基于基于ScrollCategory组件 数据
+        this.$axios.get('/api/category/goods/1')
+
+        // 基于ScrollContent组件 数据
+        // this.$axios.get('/api/category/1')
       ])
       const isSuccess = res.every(item => {
         if (item.code === 0) {
@@ -76,9 +77,12 @@ export default {
       })
       if (isSuccess) {
         this.categoryMenu = res[0].data
-        // this.categoryGood = res[1].data._req
-        this.categoryGood = res[1].data._req.content
-        this.total = res[1].data._req.total
+        // 基于ScrollCategory组件 数据
+        this.categoryGood = res[1].data._req
+
+        // 基于ScrollContent组件 数据
+        // this.categoryGood = res[1].data._req.content
+        // this.total = res[1].data._req.total
       }
     },
     // 切换值
@@ -86,14 +90,23 @@ export default {
       const res = await this.$axios.get(`/api/category/${event}`)
       if (res.code === 0) {
         this.categoryGood = res.data._req.content
+        this.total = res.data._req.total
+      } else {
+        this.$toast.fail('获取数据失败')
+        this.categoryGood = []
+        this.total = 0
       }
     },
     // 滚动内容上拉加载
-    async pullUpLoad(args) {
+    async pullUpLoad(args, callback) {
       const res = await this.$axios.get(`/api/category/${args.cateId}?page=${args.page}&pageSize=${args.pageSize}`)
       if (res.code === 0) {
-        this.categoryGood = this.categoryGood.concat(res.data._req)
+        this.categoryGood = this.categoryGood.concat(res.data._req.content)
+      } else {
+        this.$toast.fail('获取数据失败')
       }
+      // 回调，子组件执行后续操作
+      callback()
     }
   }
 }
@@ -131,6 +144,7 @@ export default {
     }
   }
   .category-content{
+    width: 100%;
     position: absolute;
     top: 92px + @statusBarHeight;
     left: 0;

@@ -1,5 +1,5 @@
 <!--
-  滚动分类组件
+  滚动分类组件 分页加载
 -->
 <template>
   <div class="scroll-category">
@@ -17,8 +17,7 @@
     </div>
     <div ref="contentWrapper" class="content-wrapper">
       <div class="content-wrapper-bg">
-        <!-- <div v-for="content in categoryGood" :key="content.name" ref="content"> -->
-        <h4 class="content-wrapper-name">{{ '111' }}</h4>
+        <h4 class="content-wrapper-name">{{ categoryName }}</h4>
         <div class="content-wrapper-items">
           <div
             v-for="item in categoryGood"
@@ -31,7 +30,10 @@
             <p class="content-wrapper-item-name">{{ item.name }}</p>
           </div>
         </div>
-        <!-- </div> -->
+        <div class="content-wrapper-tips">
+          <van-loading v-if="isPullUpLoad" size="24px">加载中...</van-loading>
+          <van-divider v-if="isNotData">到底了，看看别的分类吧</van-divider>
+        </div>
       </div>
     </div>
   </div>
@@ -72,7 +74,9 @@ export default {
       // 分类选中项
       cateActive: 0,
       page: 1,
-      pageSize: 20
+      pageSize: 20,
+      // 加载中
+      isPullUpLoad: false
     }
   },
 
@@ -83,6 +87,16 @@ export default {
         return 1
       }
       return this.categoryMenu[this.cateActive].id
+    },
+    categoryName() {
+      if (this.categoryMenu.length === 0) {
+        return ''
+      }
+      return this.categoryMenu[this.cateActive].name
+    },
+    // 是否加载完成
+    isNotData() {
+      return this.categoryGood.length === this.total
     }
   },
   watch: {
@@ -119,33 +133,21 @@ export default {
           pullUpLoad: { // 下拉加载
             threshold: 50
           },
-          pullDownRefresh: true, // 上拉刷新
+          // pullDownRefresh: true, // 上拉刷新
           probeType: 3,
           click: true,
           scrollY: true,
           tap: true,
           mouseWheel: true
         })
+        // 监听上拉加载
+        this.contentWrapper.on('pullingUp', this.pullUpLoad)
+
+        // 监听下拉刷新
+        // this.contentWrapper.on('pullingDown', this.pullingDown)
       } else {
         this.contentWrapper.refresh()
       }
-
-      // 监听上拉加载
-      this.contentWrapper.on('pullingUp', () => {
-        if (this.categoryGood.length === this.total) {
-          this.contentWrapper.closePullUp()
-          return
-        }
-        this.pullUpLoad()
-        this.contentWrapper.finishPullUp()
-      })
-
-      // 监听下拉刷新
-      // this.contentWrapper.on('pullingDown', () => {
-      //   // this.cateActive--
-      //   this.pullingDown()
-      //   this.contentWrapper.finishPullDown()
-      // })
     },
     // 切换分类
     changeCate(cateIndex) {
@@ -153,18 +155,35 @@ export default {
       // 滚动到对应菜单位置
       const el = this.$refs.menuItem[this.cateActive]
       this.menuScroll.scrollToElement(el, 300)
+
+      // 内容回到开始位置
+      this.contentWrapper.scrollTo(0, 0)
+
       // 请求内容
       this.$emit('changeCate', this.cateId)
       this.page = 1
     },
     // 上拉加载
     pullUpLoad() {
+      console.log('上拉加载', this.categoryGood.length, this.total)
+      if (this.isNotData) {
+        this.contentWrapper.finishPullUp()
+        return
+      }
+      this.isPullUpLoad = true
+      // 请求
       this.page++
-      this.$emit('pullUpLoad', { cateId: this.cateId, page: this.page, pageSize: this.pageSize })
+      this.$emit('pullUpLoad', { cateId: this.cateId, page: this.page, pageSize: this.pageSize }, () => {
+        this.contentWrapper.finishPullUp()
+        this.isPullUpLoad = false
+      })
     },
     // 下拉刷新
     pullingDown() {
       console.log('上拉刷新')
+      // @todo  请求数据
+
+      this.contentWrapper.finishPullDown()
     }
   }
 }
