@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import FastClick from 'fastclick'
 // css初始化
 import 'normalize.css/normalize.css'
 import 'amfe-flexible'
@@ -60,6 +61,9 @@ Vue.use(Loading)
 
 Vue.prototype.$dialog = Dialog
 Vue.prototype.$toast = Toast
+
+// 解决移动端click点击延迟300ms问题
+FastClick.attach(document.body)
 
 Vue.config.productionTip = false
 

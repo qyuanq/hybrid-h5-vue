@@ -70,6 +70,13 @@ export default {
   height:100%;
   // padding-bottom: constant(safe-area-inset-bottom);
   // padding-bottom: env(safe-area-inset-bottom);
+
+  //禁止动画闪屏
+  perspective: 1000;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transform: translate3d(0, 0, 0);//动画更流畅
+
   //push页面时： 新页面进入动画
   .fold-left-enter-active{
     animation-name: fold-left-in;
@@ -120,19 +127,6 @@ export default {
     }
     100%{
       transform: translate(100%,0);
-    }
-  }
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
     }
   }
 }
