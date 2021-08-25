@@ -1,8 +1,8 @@
 <template>
   <div ref="home" class="home" @scroll="onScrollChange">
+    <skeleton v-if="isShowLoading" />
     <!-- 下拉刷新 -->
-    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
-      <!-- <skeleton v-show="! isShowLoading" /> -->
+    <van-pull-refresh v-if="!isShowLoading" v-model="isLoading" @refresh="onRefresh">
       <div class="home-header">
         <nav-bar :fixed="true" class="home-nav-bar z-index-4" :nav-bar-style="navBarStyle" :border="false">
           <template v-slot:left>
@@ -28,7 +28,6 @@
         <!-- <van-divider>我是有底线的</van-divider> -->
       </div>
     </van-pull-refresh>
-
   </div>
 </template>
 
@@ -39,7 +38,7 @@ import NavBox from './components/NavBox'
 import Seconds from './components/Seconds'
 import Activity from '@c/Activity'
 import Goods from '@c/GoodList/Goods'
-// import Skeleton from './components/Skeleton'
+import Skeleton from './components/Skeleton'
 import _ from 'lodash'
 export default {
   name: 'Home',
@@ -49,13 +48,13 @@ export default {
     NavBox,
     Seconds,
     Activity,
-    Goods
-    // Skeleton
+    Goods,
+    Skeleton
   },
   data() {
     return {
-      // 骨架屏展示
-      isShowLoading: false,
+      // 骨架屏展示,加载
+      isShowLoading: true,
       swiperHeight: window.isIphoneX ? '228px' : '184px',
       keywords: '',
       // 记录页面滚动值
@@ -75,6 +74,9 @@ export default {
     this.$refs.home.scrollTop = this.scrollTopValue
   },
 
+  mounted() {
+    this.isShowLoading = false
+  },
   methods: {
     /**
      * 监听页面滚动条

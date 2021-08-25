@@ -1,22 +1,25 @@
 <template>
-  <div
-    ref="category"
-    class="category"
-  >
-    <nav-bar
-      class="nav-bar z-index-4"
-      :fixed="true"
+  <div>
+    <skeleton v-if="isShowLoading" />
+    <div
+      v-else
+      ref="category"
+      class="category"
     >
-      <template v-slot:left>
-        <van-search v-model="keywords" class="van-search" placeholder="请输入搜索关键词" />
-      </template>
-    </nav-bar>
-    <div :class="['category-content',{'category-content-iphonex': $store.state.isIphoneX}]">
-      <scroll-category
-        ref="scrollCategory"
-        :category-menu="categoryMenu"
-        :category-good="categoryGood"
-      />
+      <nav-bar
+        class="nav-bar z-index-4"
+        :fixed="true"
+      >
+        <template v-slot:left>
+          <van-search v-model="keywords" class="van-search" placeholder="请输入搜索关键词" />
+        </template>
+      </nav-bar>
+      <div :class="['category-content',{'category-content-iphonex': $store.state.isIphoneX}]">
+        <scroll-category
+          ref="scrollCategory"
+          :category-menu="categoryMenu"
+          :category-good="categoryGood"
+        />
 
       <!-- <scroll-content
         :category-menu="categoryMenu"
@@ -25,23 +28,28 @@
         @changeCate="changeCate"
         @pullUpLoad="pullUpLoad"
       /> -->
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import NavBar from '@c/NavBar'
+import Skeleton from './components/Skeleton'
 import ScrollCategory from './components/ScrollCategory'
 // import ScrollContent from './components/ScrollContent.vue'
 export default {
   name: 'Category',
   components: {
     NavBar,
+    Skeleton,
     ScrollCategory
     // ScrollContent
   },
   data() {
     return {
+      // 加载中 骨架屏
+      isShowLoading: true,
       // 搜索关键词
       keywords: '',
       // 分类菜单
@@ -57,6 +65,8 @@ export default {
 
   async created() {
     await this.initData()
+    // 隐藏加载
+    this.isShowLoading = false
   },
 
   methods: {

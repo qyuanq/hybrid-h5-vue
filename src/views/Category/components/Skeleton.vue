@@ -1,7 +1,5 @@
-<!--
-  首页骨架屏
--->
 <template>
+  <!-- 分类页骨架屏 -->
   <div id="skeleton">
     <content-loader
       :width="414"
@@ -10,9 +8,10 @@
       primary-color="#f3f3f3"
       secondary-color="#ecebeb"
     >
-      <rect x="6" y="18" rx="5" ry="5" width="300" height="30" />
+      <rect x="6" y="18" rx="5" ry="5" width="100" height="20" />
       <rect x="11" y="54" rx="0" ry="0" width="384" height="110" />
-      <rect x="320" y="135" rx="0" ry="0" width="24" height="0" />
+      <rect x="7" y="176" rx="0" ry="0" width="400" height="125" />
+      <rect x="320" y="235" rx="0" ry="0" width="24" height="0" />
       <rect x="123" y="17" rx="0" ry="0" width="274" height="20" />
       <circle cx="36" cy="329" r="15" />
       <rect x="13" y="352" rx="0" ry="0" width="51" height="5" />
@@ -66,6 +65,8 @@ export default {
     return {
     }
   },
+
+  computed: {},
 
   methods: {}
 }
