@@ -17,7 +17,7 @@
     "better-scroll": "^2.4.2",
     "core-js": "^3.6.5",
     "fastclick": "^1.0.6",
-    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21",
     "normalize.css": "^8.0.1",
     "vant": "^2.12.24",
     "vue": "^2.6.11",

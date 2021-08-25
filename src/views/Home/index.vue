@@ -39,7 +39,7 @@ import Seconds from './components/Seconds'
 import Activity from '@c/Activity'
 import Goods from '@c/GoodList/Goods'
 import Skeleton from './components/Skeleton'
-import _ from 'lodash'
+import { throttle } from 'lodash-es'
 export default {
   name: 'Home',
   components: {
@@ -85,7 +85,7 @@ export default {
      *    当前滚动距离 / 锚点值 = nav-bar背景透明度 opacity
      * 3.opacity > 1,当前滚动的距离已经超过了锚点值，当前nav-bar变为高亮状态值
      */
-    onScrollChange: _.throttle(function(event) {
+    onScrollChange: throttle(function(event) {
       this.scrollTopValue = event.target.scrollTop
       // 背景透明度
       const opacity = this.scrollTopValue / this.ANCHOR_SCROLL_TOP
