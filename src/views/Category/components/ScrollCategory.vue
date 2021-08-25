@@ -136,6 +136,11 @@ export default {
         // 监听内容区域滚动
         this.contentWrapper.on('scroll', (pos) => {
           this.scrollY = Math.abs(Math.round(pos.y))
+          console.log(this.scrollY)
+        })
+
+        this.contentWrapper.on('scrollEnd', () => {
+          this.isChange = true
         })
       } else {
         this.contentWrapper.refresh()
@@ -155,18 +160,13 @@ export default {
     },
     // 切换分类
     changeCate(cateIndex) {
-      // this.isChange = false
+      this.isChange = false
       // 滚动到对应菜单位置
       const el = this.$refs.menuItem[cateIndex]
       this.menuScroll.scrollToElement(el, 300)
       // 滚动到对应内容位置
       const elC = this.$refs.content[cateIndex]
-      this.contentWrapper.scrollToElement(elC, 300)
-
-      console.log(this.listHeight, this.listHeight[cateIndex])
-      // if (this.scrollY >= this.listHeight[cateIndex]) {
-      //   this.isChange = true
-      // }
+      this.contentWrapper.scrollToElement(elC)
     }
   }
 }
