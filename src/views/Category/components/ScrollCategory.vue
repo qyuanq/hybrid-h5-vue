@@ -64,7 +64,8 @@ export default {
       scrollY: 0,
       // 内容模块高度值
       listHeight: [],
-      isChange: true
+      isChange: true,
+      lastCateIndex: 0
     }
   },
 
@@ -160,6 +161,8 @@ export default {
     },
     // 切换分类
     changeCate(cateIndex) {
+      if (this.lastCateIndex === cateIndex) return
+      this.lastCateIndex = cateIndex
       this.isChange = false
       // 滚动到对应菜单位置
       const el = this.$refs.menuItem[cateIndex]
