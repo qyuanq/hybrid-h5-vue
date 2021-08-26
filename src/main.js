@@ -15,10 +15,10 @@ import '@utils/isIphoneX.js'
 import request from '@/utils/request'
 Vue.prototype.$axios = request
 
+// 全局组件
 import '@/icons' // icons
-
-import _ from 'lodash'
-Vue.prototype._ = _
+import BackToTop from '@c/BackToTop'
+Vue.component('v-top', BackToTop)
 
 // ui库
 import { Button, Tabbar, TabbarItem, Swipe, SwipeItem, Lazyload, Grid, GridItem, NavBar, Search, DropdownMenu, DropdownItem, Overlay, Tag, GoodsAction, GoodsActionIcon, GoodsActionButton, Divider, Stepper, SubmitBar, RadioGroup, Radio, Cell, CellGroup, Badge, Checkbox, CheckboxGroup, Form, Field, Dialog, Icon, Toast, PullRefresh, Skeleton, List, Loading } from 'vant'

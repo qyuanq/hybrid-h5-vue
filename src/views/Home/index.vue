@@ -27,6 +27,7 @@
         <Goods ref="goods" class="home-goods" api-goods="/api/goods" />
         <!-- <van-divider>我是有底线的</van-divider> -->
       </div>
+      <v-top :scroll-top-value="scrollTopValue" />
     </van-pull-refresh>
   </div>
 </template>
