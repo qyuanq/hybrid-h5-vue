@@ -7,7 +7,12 @@
       <p class="goods-info-content-desc text-line-2">{{ goods.desc }}</p>
       <div class="goods-info-content-operation">
         <div class="goods-info-content-operation-price"><em>￥</em>{{ goods.price | priceValue }}</div>
-        <van-stepper v-model="num" integer @change="changeNum" />
+        <van-stepper
+          v-model="num"
+          integer
+          @change="changeNum"
+          @overlimit="onDelete"
+        />
       </div>
     </div>
   </div>
@@ -45,8 +50,23 @@ export default {
      * 数量变了
      */
     changeNum() {
-      console.log(this.goods)
       this.$store.dispatch('Cart/setCartNumber', { cartId: this.goods.id, num: this.num })
+    },
+    // 减少操作
+    onDelete() {
+      // 判断当前值是否为1
+      if (this.num <= 1) {
+        this.$dialog.confirm({
+          message: '确定删除该商品吗'
+        }).then(() => {
+          // 删除操作
+          this.$store.dispatch('Cart/deleteCart', this.goods.id)
+          console.log('shanchu')
+        }).catch(() => {
+          return
+        })
+      }
+      return
     }
   }
 }

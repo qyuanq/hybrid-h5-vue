@@ -169,9 +169,20 @@ export default {
 </script>
 <style lang='less' scoped>
 .order-fill{
+  position: absolute;
   width: 100%;
   height: 100vh;
-  position: absolute;
+  padding-bottom: calc(100px + constant(safe-area-inset-bottom));
+  padding-bottom: calc(100px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
   &-contact{
     margin-top: @statusBarHeight + 92px;
   }

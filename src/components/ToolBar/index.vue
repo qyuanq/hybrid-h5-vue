@@ -33,7 +33,11 @@
     <van-tabbar-item name="cart">
       <span class="tabbar-text">购物车</span>
       <template v-slot:icon>
-        <svg-icon icon-class="cart" class-name="icon-size" />
+        <!-- 登录显示购物车数量徽标 -->
+        <van-badge :content="$store.getters.userToken ? cartDataCount: ''" max="99">
+          <svg-icon id="cart" icon-class="cart" class-name="icon-size" />
+        </van-badge>
+
       </template>
     </van-tabbar-item>
     <!-- <van-tabbar-item replace to="/user"> -->
@@ -48,9 +52,19 @@
 
 <script>
 export default {
-  components: {},
   data() {
     return {
+    }
+  },
+  computed: {
+    // 购物车数量徽标
+    cartDataCount() {
+      const count = this.$store.getters.cartDataCount
+      if (count > 0 && count <= 99) {
+        return count
+      } else {
+        return ''
+      }
     }
   }
 }

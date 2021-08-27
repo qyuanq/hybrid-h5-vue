@@ -47,6 +47,7 @@ export default {
   transition: all 0.2s linear;
   transform: translateX(0);
 }
+//动画一开始和动画结束设为 translateX(100%)
 .moveR-enter,
 .moveR-leave {
   transform: translateX(100%);

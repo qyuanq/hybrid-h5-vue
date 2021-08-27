@@ -69,7 +69,12 @@ export default {
       isLoading: false
     }
   },
-
+  async created() {
+    if (this.$store.getters.userToken) {
+      // 获取购物车数据
+      await this.$store.dispatch('Cart/getCartData')
+    }
+  },
   activated() {
     // 组件被激活时，页面滚动值为最后滚动的位置
     this.$refs.home.scrollTop = this.scrollTopValue

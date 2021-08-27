@@ -21,7 +21,7 @@ import BackToTop from '@c/BackToTop'
 Vue.component('v-top', BackToTop)
 
 // ui库
-import { Button, Tabbar, TabbarItem, Swipe, SwipeItem, Lazyload, Grid, GridItem, NavBar, Search, DropdownMenu, DropdownItem, Overlay, Tag, GoodsAction, GoodsActionIcon, GoodsActionButton, Divider, Stepper, SubmitBar, RadioGroup, Radio, Cell, CellGroup, Badge, Checkbox, CheckboxGroup, Form, Field, Dialog, Icon, Toast, PullRefresh, Skeleton, List, Loading } from 'vant'
+import { Button, Tabbar, TabbarItem, Swipe, SwipeItem, Lazyload, Grid, GridItem, NavBar, Search, DropdownMenu, DropdownItem, Overlay, Tag, GoodsAction, GoodsActionIcon, GoodsActionButton, Divider, Stepper, SubmitBar, RadioGroup, Radio, Cell, CellGroup, Badge, Checkbox, CheckboxGroup, Form, Field, Dialog, Icon, Toast, PullRefresh, Skeleton, List, Loading, Empty } from 'vant'
 Vue.use(Button)
 Vue.use(Tabbar)
 Vue.use(TabbarItem)
@@ -58,6 +58,7 @@ Vue.use(PullRefresh)
 Vue.use(Skeleton)
 Vue.use(List)
 Vue.use(Loading)
+Vue.use(Empty)
 
 Vue.prototype.$dialog = Dialog
 Vue.prototype.$toast = Toast

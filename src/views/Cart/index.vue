@@ -7,56 +7,66 @@
       购物车会展示已选商品价格和已选商品总数量
       可以在购物车中修改数量，展示的总价格和总数量也会发生对应的变化
      -->
-    <nav-bar title="购物车" @click-right="onEdit">
+    <nav-bar title="购物车" :fixed="true" @click-right="onEdit">
       <template v-slot:right>
         <!-- <svg-icon icon-class="" />  -->
         编辑
       </template>
     </nav-bar>
-    <van-pull-refresh v-model="isLoading" style="min-height: 100vh;" @refresh="onRefresh">
-      <!-- 购物车没内容 -->
-      <div class="cart-no">
-        <!-- 购物车没登录 -->
-        <div class="cart-no-login" />
-      </div>
 
-      <!-- 购物车有内容 -->
-      <div class="cart-have">
-        <!-- 商品列表 -->
-        <div class="cart-have-list">
-          <div v-for="item in cartData" :key="item.id" class="cart-have-list-item">
-            <!-- 这里使用复选框或者svg -->
-            <van-checkbox v-model="item.checked" checked-color="#ee0a24" />
-            <goods-info :goods="item" class="cart-have-list-item-goods" />
-          </div>
-        </div>
-
-      </div>
-    </van-pull-refresh>
-    <!-- 底部结算框 -->
-    <div class="cart-have-bar">
-      <van-submit-bar
-        v-if="!isEdit"
-        :disabled="disabled"
-        :price="totalPrice"
-        :button-text="'结算 ' + totalCount"
-        :safe-area-inset-bottom="false"
-        @submit="onSubmit"
+    <!-- 购物车没内容 -->
+    <div v-if="$store.state.Cart.cartData.length<=0" :class="['cart-no',{'cart-no-iphoneX':$store.state.isIphoneX}]">
+      <van-empty
+        class="custom-image"
+        image="https://img01.yzcdn.cn/vant/custom-empty-image.png"
+        description="没有商品"
       >
-        <van-checkbox :value="isSelectAll" checked-color="#ee0a24" @click="changeChecked">全选</van-checkbox>
+        <van-button round type="danger" class="bottom-button" @click="onGoods">去逛逛</van-button>
+      </van-empty>
+      <!-- 购物车没登录 -->
+      <div class="cart-no-login" />
+    </div>
+
+    <!-- 购物车有内容 -->
+    <div v-else>
+      <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+        <div :class="['cart-have',{'cart-have-isIphoneX':$store.state.isIphoneX}]">
+          <!-- 商品列表 -->
+          <div class="cart-have-list">
+            <div v-for="item in cartData" :key="item.id" class="cart-have-list-item">
+              <!-- 这里使用复选框或者svg -->
+              <van-checkbox v-model="item.checked" checked-color="#ee0a24" />
+              <goods-info :goods="item" class="cart-have-list-item-goods" />
+            </div>
+          </div>
+
+        </div>
+      </van-pull-refresh>
+      <!-- 底部结算框 -->
+      <div class="cart-have-bar">
+        <van-submit-bar
+          v-if="!isEdit"
+          :disabled="disabled"
+          :price="totalPrice"
+          :button-text="'结算 ' + totalCount"
+          :safe-area-inset-bottom="false"
+          @submit="onSubmit"
+        >
+          <van-checkbox :value="isSelectAll" checked-color="#ee0a24" @click="changeChecked">全选</van-checkbox>
         <!-- <template #tip>
           你的收货地址不支持同城送, <span @click="onClickEditAddress">修改地址</span>
         </template> -->
-      </van-submit-bar>
-      <div v-else class="cart-have-bar-edit">
-        <van-checkbox :value="isSelectAll" checked-color="#ee0a24" @click="changeChecked">全选</van-checkbox>
-        <div class="cart-have-bar-edit-btn">
-          <div class="cart-have-bar-edit-btn-clean">
-            <svg-icon icon-class="delete" />
-            快速清理
+        </van-submit-bar>
+        <div v-else class="cart-have-bar-edit">
+          <van-checkbox :value="isSelectAll" checked-color="#ee0a24" @click="changeChecked">全选</van-checkbox>
+          <div class="cart-have-bar-edit-btn">
+            <div class="cart-have-bar-edit-btn-clean">
+              <svg-icon icon-class="delete" />
+              快速清理
+            </div>
+            <button class="cart-have-bar-edit-btn-collage">移入收藏夹</button>
+            <button class="cart-have-bar-edit-btn-delete" @click="onDelete">删除</button>
           </div>
-          <button class="cart-have-bar-edit-btn-collage">移入收藏夹</button>
-          <button class="cart-have-bar-edit-btn-delete" @click="onDelete">删除</button>
         </div>
       </div>
     </div>
@@ -96,7 +106,11 @@ export default {
   },
 
   async created() {
-    await this.getCartData()
+    // 没有购物车信息再请求
+    if (!this.$store.state.Cart.cartData) {
+      await this.getCartData()
+    }
+    return
   },
   deactivated() {
     this.isEdit = false
@@ -134,6 +148,10 @@ export default {
      * 删除
      */
     onDelete() {
+      if (this.totalCount <= 0) {
+        this.$toast('您还没有选中商品哦')
+        return
+      }
       this.$dialog.confirm({
         message: `确认要删除这${this.totalSpecies}个商品吗`
       })
@@ -150,6 +168,10 @@ export default {
      */
     onRefresh() {
       this.isLoading = false
+    },
+    // 购物车没商品，去逛逛
+    onGoods() {
+      this.$parent.isComponent = 'home'
     }
   }
 }
@@ -158,11 +180,31 @@ export default {
 <style lang='less' scoped>
 .cart{
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  padding-bottom: calc(200px + constant(safe-area-inset-bottom));
+  padding-bottom: calc(200px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
   &-no{
-
+    margin-top: 92px + 44px;
+    &-iphoneX{
+      margin-top: calc(92px + constant(safe-area-inset-top));
+      margin-top: calc(92px + env(safe-area-inset-top))
+    }
   }
   &-have{
+    margin-top: 92px + 44px;
+    &-isIphoneX{
+      margin-top: calc(92px  + constant(safe-area-inset-top));
+      margin-top: calc(92px  + env(safe-area-inset-top));
+    }
     &-list{
       &-item{
         background: white;
