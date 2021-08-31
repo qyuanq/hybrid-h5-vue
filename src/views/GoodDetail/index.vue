@@ -107,6 +107,7 @@
 <script>
 import NavBar from '@c/NavBar'
 import Parallax from '@c/Parallax'
+
 export default {
   name: 'GoodDetail',
   components: {
@@ -282,5 +283,13 @@ export default {
   // &-action{
   //   height: 50PX;
   // }
+}
+.parallax-slow{
+  height: 750px;
+  overflow: hidden;
+}
+.parallax-content{
+  height:100%;
+  overflow: hidden;
 }
 </style>

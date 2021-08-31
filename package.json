@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@better-scroll/core": "^2.4.2",
+    "@better-scroll/indicators": "^2.4.2",
     "@better-scroll/pull-down": "^2.4.2",
     "@better-scroll/pull-up": "^2.4.2",
     "amfe-flexible": "^2.2.1",

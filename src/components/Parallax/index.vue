@@ -4,7 +4,7 @@
 <template>
   <div ref="parallax" class="parallax" @scroll="onScrollChange">
     <!-- 缓慢移动区 -->
-    <div class="parallax-slow" :style="{top:slowTop}">
+    <div class="parallax-slow" :style="{transform:`translate3d(0,${slowTop},0)`}">
       <slot name="parallax-slow" />
     </div>
     <!-- 正常移动区 -->
@@ -23,7 +23,7 @@ export default {
       // 页面滚动距离
       parallaxScroll: 0,
       // 速度差
-      SPEED_DIFF: 2
+      SPEED_DIFF: 1.3
     }
   },
 
@@ -57,8 +57,12 @@ export default {
   overflow: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  perspective: 1000;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
   &-slow{
-    position: relative;
+    // position: relative;
+    //开启translate3d GPU硬件加速
   }
   &-content{
     position: relative;
