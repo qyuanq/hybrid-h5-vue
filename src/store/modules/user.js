@@ -2,7 +2,7 @@ export default {
   namespaced: true,
   state: {
     // 用户标识
-    userToken: ''
+    userToken: '111'
   },
   mutations: {
     /**
