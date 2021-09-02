@@ -10,7 +10,7 @@
           ref="menuItem"
           :key="item.id"
           class="menu-wrapper-item"
-          :class="index === currentIndex && isChange ? 'menu-wrapper-item-active' : ''"
+          :class="index === currentIndex ? 'menu-wrapper-item-active' : ''"
           @click="changeCate(index)"
         >{{ item.name }}</li>
       </ul>
@@ -63,9 +63,7 @@ export default {
       // 内容滚动值
       scrollY: 0,
       // 内容模块高度值
-      listHeight: [],
-      isChange: true,
-      lastCateIndex: 0
+      listHeight: []
     }
   },
 
@@ -139,10 +137,6 @@ export default {
           this.scrollY = Math.abs(Math.round(pos.y))
           console.log(this.scrollY)
         })
-
-        this.contentWrapper.on('scrollEnd', () => {
-          this.isChange = true
-        })
       } else {
         this.contentWrapper.refresh()
       }
@@ -161,15 +155,14 @@ export default {
     },
     // 切换分类
     changeCate(cateIndex) {
-      if (this.lastCateIndex === cateIndex) return
-      this.lastCateIndex = cateIndex
-      this.isChange = false
       // 滚动到对应菜单位置
       const el = this.$refs.menuItem[cateIndex]
       this.menuScroll.scrollToElement(el, 300)
       // 滚动到对应内容位置
-      const elC = this.$refs.content[cateIndex]
-      this.contentWrapper.scrollToElement(elC)
+      if (cateIndex === 0) {
+        this.contentWrapper.scrollTo(0, 0)
+      }
+      this.contentWrapper.scrollTo(0, -(this.listHeight[cateIndex - 1]))
     }
   }
 }

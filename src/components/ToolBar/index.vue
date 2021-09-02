@@ -75,6 +75,9 @@ export default {
     .van-tabbar-item__icon {
       margin-bottom: 5PX;
     }
+    .van-badge--fixed{
+      top: 8px;
+    }
   }
   .icon-size {
     // width: 18PX;

@@ -202,7 +202,11 @@ export default {
   position: fixed;
   bottom: 10px;
   right: 150px;
+  perspective: 1000;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
   &-img {
+    transform: translate3d(0, 0, 0);
     animation: 0.88s mymove ease-in-out;
     width: 180px;
     height: 180px;

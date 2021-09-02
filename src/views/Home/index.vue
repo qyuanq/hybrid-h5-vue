@@ -1,8 +1,7 @@
 <template>
-  <div ref="home" class="home" @scroll="onScrollChange">
+  <div class="home">
     <skeleton v-if="isShowLoading" />
-    <!-- 下拉刷新 -->
-    <van-pull-refresh v-if="!isShowLoading" v-model="isLoading" @refresh="onRefresh">
+    <div v-if="!isShowLoading">
       <div class="home-header">
         <nav-bar :fixed="true" class="home-nav-bar z-index-4" :nav-bar-style="navBarStyle" :border="false">
           <template v-slot:left>
@@ -15,20 +14,37 @@
             <svg-icon icon-class="zixun" class-name="zixun" />
           </template>
         </nav-bar>
-        <div :class="['home-header-bg',{'home-header-bg-iphonex':$store.state.isIphoneX}]" />
       </div>
-      <div class="home-context">
-        <swiper :swiper-height="swiperHeight" :class="['swiper',{'swiper-iphonex':$store.state.isIphoneX}]" />
-        <nav-box />
-        <seconds />
-        <Activity class="activity-ping-gou-jie">
-          <img src="@img/haoHuoQiang.gif">
-        </Activity>
-        <Goods ref="goods" class="home-goods" api-goods="/api/goods" />
-        <!-- <van-divider>我是有底线的</van-divider> -->
+      <div ref="srcoll" class="scroll" @scroll="onScrollChange">
+        <!-- 下拉刷新 -->
+        <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+          <!-- <template v-slot:pulling>
+            <div class="pull">下拉刷新</div>
+          </template>
+          <template v-slot:loosing>
+            <div class="pull">松开刷新</div>
+          </template>
+          <template v-slot:loading>
+            <div class="pull">更新中</div>
+          </template>
+          <template v-slot:success>
+            <div class="pull">刷新成功</div>
+          </template> -->
+          <div class="home-context">
+            <div :class="['home-header-bg',{'home-header-bg-iphonex':$store.state.isIphoneX}]" />
+            <swiper ref="swiper" :swiper-height="swiperHeight" class="swiper" />
+            <nav-box />
+            <seconds />
+            <Activity class="activity-ping-gou-jie">
+              <img src="@img/haoHuoQiang.gif">
+            </Activity>
+            <Goods ref="goods" class="home-goods" api-goods="/api/goods" @scroll="onScrollChange" />
+            <!-- <van-divider>我是有底线的</van-divider> -->
+          </div>
+          <v-top :scroll-top-value="scrollTopValue" />
+        </van-pull-refresh>
       </div>
-      <v-top :scroll-top-value="scrollTopValue" />
-    </van-pull-refresh>
+    </div>
   </div>
 </template>
 
@@ -77,7 +93,7 @@ export default {
   },
   activated() {
     // 组件被激活时，页面滚动值为最后滚动的位置
-    this.$refs.home.scrollTop = this.scrollTopValue
+    this.$refs.srcoll.scrollTop = this.scrollTopValue
   },
 
   mounted() {
@@ -99,6 +115,7 @@ export default {
     }, 300),
     // 下拉刷新
     async onRefresh() {
+      // 下拉刷新导航隐藏，背景改红,vant待优化
       await this.$refs.goods.initData()
       this.isLoading = false
     }
@@ -110,12 +127,24 @@ export default {
 .home{
   width: 100%;
   height: 100vh;
-  overflow: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: calc(100px + constant(safe-area-inset-bottom));
-  padding-bottom: calc(100px + env(safe-area-inset-bottom));
-  box-sizing: border-box;
+  .scroll{
+    height:calc(100vh - 100px - constant(safe-area-inset-bottom));
+    height:calc(100vh - 100px - env(safe-area-inset-bottom));
+    overflow: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    // padding-bottom: calc(100px + constant(safe-area-inset-bottom));
+    // padding-bottom: calc(100px + env(safe-area-inset-bottom));
+    box-sizing: border-box;
+    ::v-deep{
+      .van-pull-refresh__head{
+        background: #c82519;
+        z-index: 2;
+        transform: translateY(40%);
+      }
+    }
+  }
+
   &-nav-bar{
     ::v-deep{
       // .van-nav-bar__content{
@@ -155,8 +184,8 @@ export default {
       background-image: linear-gradient(0deg,#f1503b,#c82519 50%);
       border-bottom-left-radius: 100%;
       border-bottom-right-radius: 100%;
-      position: absolute;
-      top: 0;
+      position: relative;
+      top: -1px;
       left: -25%;
       height: 268px + @statusBarHeight;
       &-iphonex{
@@ -168,11 +197,7 @@ export default {
   &-context{
     padding: 0 20px;
     .swiper{
-        margin-top: @marginSize + 92px + @statusBarHeight;
-        &-iphonex{
-          margin-top: calc(@marginSize + 92px  + constant(safe-area-inset-top));
-          margin-top: calc(@marginSize + 92px  + env(safe-area-inset-top));
-        }
+      margin-top: -160px;
       ::v-deep{
         .van-swipe__indicator{
           width: 12px;
