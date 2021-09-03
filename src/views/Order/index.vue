@@ -7,30 +7,32 @@
       left-arrow
       @click-left="onClickLeft"
     />
-    <!-- 收货地址 -->
-    <contact
-      class="order-fill-contact"
-      :current-contact="currentContact"
-    />
-    <!-- 商品信息 -->
-    <div v-if="isType === 'cart' && checkCart.length > 0">
-      <goods-info
-        v-for="item in checkCart"
-        :key="item.id"
-        :goods="item"
-        is-type="cart"
-        class="order-fill-goods"
+    <div :class="['order-fill-content',{'order-fill-content-isIphoneX':$store.state.isIphoneX}]">
+      <!-- 收货地址 -->
+      <contact
+        class="order-fill-contact"
+        :current-contact="currentContact"
       />
+      <!-- 商品信息 -->
+      <div v-if="isType === 'cart' && checkCart.length > 0">
+        <goods-info
+          v-for="item in checkCart"
+          :key="item.id"
+          :goods="item"
+          is-type="cart"
+          class="order-fill-goods"
+        />
+      </div>
+      <goods-info
+        v-else
+        :goods="goods"
+        is-type="now"
+        class="order-fill-goods"
+        @change="changeNum"
+      />
+      <!-- 支付方式 -->
+      <pay class="order-fill-pay" @change="changePay" />
     </div>
-    <goods-info
-      v-else
-      :goods="goods"
-      is-type="now"
-      class="order-fill-goods"
-      @change="changeNum"
-    />
-    <!-- 支付方式 -->
-    <pay class="order-fill-pay" @change="changePay" />
     <!-- 提交订单栏 -->
     <van-submit-bar :price="totalPrice" button-text="提交订单" @submit="onSubmit" />
   </div>
@@ -171,20 +173,13 @@ export default {
 .order-fill{
   position: absolute;
   width: 100%;
-  height: 100vh;
-  padding-bottom: calc(100px + constant(safe-area-inset-bottom));
-  padding-bottom: calc(100px + env(safe-area-inset-bottom));
-  box-sizing: border-box;
-  overflow: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* firefox */
-  -ms-overflow-style: none; /* IE 10+ */
-  &::-webkit-scrollbar {
-    display: none; /* Chrome Safari */
-  }
-  &-contact{
-    margin-top: @statusBarHeight + 92px;
+  height: 100%;
+  &-content{
+    .scroll-view-content();
+    &-isIphoneX{
+      top: calc(92px + constant(safe-area-inset-top));
+      top: calc(92px + env(safe-area-inset-top));
+    }
   }
   &-goods{
     margin-top: @marginSize;

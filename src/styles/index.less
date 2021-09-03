@@ -48,3 +48,32 @@
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+//混入 scroll-view溢出滚动,未设置定位
+.scroll-view{
+  overflow: hidden;
+  overflow-y: auto;
+  z-index:2;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
+}
+//混入，非iphonex 定位在navbar和toolbar中间,iphonex需要重新设置top
+.scroll-view-content{
+  position: absolute;
+  top: @statusBarHeight + 92px;
+  left: 0;
+  bottom: calc(100px + constant(safe-area-inset-bottom));
+  bottom: calc(100px + env(safe-area-inset-bottom));
+  overflow: hidden;
+  overflow-y: auto;
+  z-index:2;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
+}

@@ -15,7 +15,7 @@
           </template>
         </nav-bar>
       </div>
-      <div ref="srcoll" class="scroll" @scroll="onScrollChange">
+      <div ref="scroll" class="scroll" @scroll="onScrollChange">
         <!-- 下拉刷新 -->
         <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
           <!-- <template v-slot:pulling>
@@ -30,7 +30,7 @@
           <template v-slot:success>
             <div class="pull">刷新成功</div>
           </template> -->
-          <div class="home-context">
+          <div id="hook" class="home-context">
             <div :class="['home-header-bg',{'home-header-bg-iphonex':$store.state.isIphoneX}]" />
             <swiper ref="swiper" :swiper-height="swiperHeight" class="swiper" />
             <nav-box />
@@ -41,9 +41,9 @@
             <Goods ref="goods" class="home-goods" api-goods="/api/goods" @scroll="onScrollChange" />
             <!-- <van-divider>我是有底线的</van-divider> -->
           </div>
-          <v-top :scroll-top-value="scrollTopValue" />
         </van-pull-refresh>
       </div>
+      <v-top :scroll-top-value="scrollTopValue" ele="hook" @scrollToTop="scrollToTop" />
     </div>
   </div>
 </template>
@@ -93,7 +93,7 @@ export default {
   },
   activated() {
     // 组件被激活时，页面滚动值为最后滚动的位置
-    this.$refs.srcoll.scrollTop = this.scrollTopValue
+    this.$refs.scroll.scrollTop = this.scrollTopValue
   },
 
   mounted() {
@@ -118,6 +118,9 @@ export default {
       // 下拉刷新导航隐藏，背景改红,vant待优化
       await this.$refs.goods.initData()
       this.isLoading = false
+    },
+    scrollToTop() {
+      this.$refs.scroll.scrollTop = 0
     }
   }
 }
@@ -126,16 +129,15 @@ export default {
 <style lang='less' scoped>
 .home{
   width: 100%;
-  height: 100vh;
+  height: 100%;
   .scroll{
-    height:calc(100vh - 100px - constant(safe-area-inset-bottom));
-    height:calc(100vh - 100px - env(safe-area-inset-bottom));
-    overflow: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    // padding-bottom: calc(100px + constant(safe-area-inset-bottom));
-    // padding-bottom: calc(100px + env(safe-area-inset-bottom));
-    box-sizing: border-box;
+    width: 100%;
+    position: absolute;
+    top:0;
+    left:0;
+    bottom: calc(100px + constant(safe-area-inset-bottom));
+    bottom: calc(100px + env(safe-area-inset-bottom));
+    .scroll-view();
     ::v-deep{
       .van-pull-refresh__head{
         background: #c82519;

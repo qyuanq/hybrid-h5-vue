@@ -13,6 +13,12 @@ export default {
     scrollTopValue: {
       type: Number,
       default: 0
+    },
+    // 元素id
+    ele: {
+      type: String,
+      require: true,
+      default: 'hook'
     }
   },
   data() {
@@ -22,9 +28,9 @@ export default {
 
   methods: {
     toTop() {
-      // 回到父组件顶部   this.$parent.$el：为父组件dom元素
-      console.log(this.$parent)
-      this.$parent.$el.scrollIntoView()
+      // scrollIntoView 不兼容ios本机测试版本12
+      document.getElementById(this.ele).scrollIntoView()
+      this.$emit('scrollToTop')
     }
   }
 }
@@ -36,6 +42,7 @@ export default {
   bottom: 200px;
   cursor: pointer;
   right: 20px;
+  z-index: 99;
   &-icon{
     width: 38PX;
     height: 38PX;

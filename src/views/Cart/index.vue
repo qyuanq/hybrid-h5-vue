@@ -29,19 +29,21 @@
 
     <!-- 购物车有内容 -->
     <div v-else>
-      <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
-        <div :class="['cart-have',{'cart-have-isIphoneX':$store.state.isIphoneX}]">
-          <!-- 商品列表 -->
-          <div class="cart-have-list">
-            <div v-for="item in cartData" :key="item.id" class="cart-have-list-item">
-              <!-- 这里使用复选框或者svg -->
-              <van-checkbox v-model="item.checked" checked-color="#ee0a24" />
-              <goods-info :goods="item" class="cart-have-list-item-goods" />
+      <div :class="['scroll-view',{'scroll-view-isIphoneX':$store.state.isIphoneX}]">
+        <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+          <div class="cart-have">
+            <!-- 商品列表 -->
+            <div class="cart-have-list">
+              <div v-for="item in cartData" :key="item.id" class="cart-have-list-item">
+                <!-- 这里使用复选框或者svg -->
+                <van-checkbox v-model="item.checked" checked-color="#ee0a24" />
+                <goods-info :goods="item" class="cart-have-list-item-goods" />
+              </div>
             </div>
-          </div>
 
-        </div>
-      </van-pull-refresh>
+          </div>
+        </van-pull-refresh>
+      </div>
       <!-- 底部结算框 -->
       <div class="cart-have-bar">
         <van-submit-bar
@@ -181,17 +183,9 @@ export default {
 .cart{
   width: 100%;
   height: 100%;
-  padding-bottom: calc(200px + constant(safe-area-inset-bottom));
-  padding-bottom: calc(200px + env(safe-area-inset-bottom));
-  box-sizing: border-box;
-  overflow: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* firefox */
-  -ms-overflow-style: none; /* IE 10+ */
-  &::-webkit-scrollbar {
-    display: none; /* Chrome Safari */
-  }
+  // padding-bottom: calc(200px + constant(safe-area-inset-bottom));
+  // padding-bottom: calc(200px + env(safe-area-inset-bottom));
+  // box-sizing: border-box;
   &-no{
     margin-top: 92px + 44px;
     &-iphoneX{
@@ -199,12 +193,20 @@ export default {
       margin-top: calc(92px + env(safe-area-inset-top))
     }
   }
-  &-have{
-    margin-top: 92px + 44px;
+  .scroll-view{//滚动内容 设置absolute,top,left,bottom就不用指定height，也可以实现滚动
+    position: absolute;
+    top: 92px + @statusBarHeight;
+    left: 0;
+    bottom: calc(200px + constant(safe-area-inset-bottom));
+    bottom: calc(200px + env(safe-area-inset-bottom));
+    .scroll-view();
     &-isIphoneX{
-      margin-top: calc(92px  + constant(safe-area-inset-top));
-      margin-top: calc(92px  + env(safe-area-inset-top));
+      top: calc(92px  + constant(safe-area-inset-top));
+      top: calc(92px  + env(safe-area-inset-top));
     }
+  }
+  &-have{
+    height: 100%;
     &-list{
       &-item{
         background: white;

@@ -1,15 +1,16 @@
 <template>
-  <div ref="my" class="my" @scroll="changeScroll">
-    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
-      <nav-bar
-        :nav-bar-style="navBarStyle"
-        :fixed="true"
-        title="个人中心"
-        right-text="设置"
-        @click-right="onSet"
-      />
-      <div class="my-content">
-        <div :class="['my-content-header',{'my-content-header-iphoneX':$store.state.isIphoneX}]">
+  <div class="my">
+    <nav-bar
+      :nav-bar-style="navBarStyle"
+      :fixed="true"
+      title="个人中心"
+      right-text="设置"
+      class="z-index-4"
+      @click-right="onSet"
+    />
+    <div ref="myContent" class="my-content" @scroll="changeScroll">
+      <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+        <div ref="header" :class="['my-content-header',{'my-content-header-iphoneX':$store.state.isIphoneX}]">
           <div class="user-info">
             <div class="user-info-content">
               <div class="user-info-content-icon">
@@ -70,8 +71,8 @@
           layout-type="2"
           api-goods="/api/goods"
         />
-      </div>
-    </van-pull-refresh>
+      </van-pull-refresh>
+    </div>
   </div>
 </template>
 
@@ -93,7 +94,9 @@ export default {
       // 滚动锚点值
       ANCHOR_SCROLL_TOP: 15,
       // 上拉加载
-      isLoading: false
+      isLoading: false,
+      // 滚动内容定位top距离
+      positionTop: 0
     }
   },
 
@@ -106,9 +109,15 @@ export default {
     }
   },
 
+  mounted() {
+    this.$nextTick(() => {
+      this.positionTop = this.$refs.header.offsetHeight + 'px'
+    })
+  },
+
   activated() {
     // 组件被激活时，页面滚动值为最后滚动的位置
-    this.$refs.my.scrollTop = this.scrollTopValue
+    this.$refs.myContent.scrollTop = this.scrollTopValue
   },
 
   methods: {
@@ -144,8 +153,6 @@ export default {
 .my{
   height: 100%;
   width: 100%;
-  overflow: hidden;
-  overflow-y: auto;
   position: absolute;
   ::v-deep{
     .van-nav-bar__text{
@@ -153,8 +160,12 @@ export default {
     }
   }
   &-content{
-    padding-bottom: calc(100px + constant(safe-area-inset-bottom));
-    padding-bottom: calc(100px + env(safe-area-inset-bottom));
+    .scroll-view();
+    position: absolute;
+    left: 0;
+    bottom: calc(100px + constant(safe-area-inset-bottom));
+    bottom: calc(100px + env(safe-area-inset-bottom));
+    top:0;
     &-header{
       width: 100%;
       padding-top: @statusBarHeight;
