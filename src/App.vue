@@ -1,0 +1,131 @@
+<template>
+  <div id="app">
+    <transition :name="transitionName">
+      <keep-alive :include="keepAliveNames">
+        <router-view />
+      </keep-alive>
+    </transition>
+  </div>
+</template>
+<script>
+
+export default {
+  name: 'App',
+  data() {
+    return {
+      // transition name
+      transitionName: '',
+      // 只有名称匹配的组件会被缓存
+      keepAliveNames: [
+        'Main'
+      ]
+    }
+  },
+  watch: {
+    // 监听路由变化，判断执行前进 or 后退 动画
+    '$route'(to, from) {
+      if (to.params.clearTask) {
+        // 初始化虚拟任务栈
+        this.virtualTaskStack = ['Main']
+        return
+      }
+      const routerType = to.params.routerType
+      if (routerType === 'push') {
+        this.keepAliveNames.push(to.name)
+        this.transitionName = 'fold-left'
+      } else {
+        this.keepAliveNames.pop()
+        this.transitionName = 'fold-right'
+      }
+    }
+  },
+  created() {
+    this.$store.commit('setIsIphoneX', window.isIphoneX)
+    console.log('iphonex', window.isIphoneX, this.$store.state.isIphoneX)
+    // 指定Native主动调用的方法
+    window.nativeFunctionUserLogin = this.nativeFunctionUserLogin
+  },
+  methods: {
+    /**
+     * 接收当前自动登录的用户的用户名
+     * 保存当前自动登录的用户名到vuex
+     */
+    nativeFunctionUserLogin(userToken) {
+      this.$store.commit('setUserToken', userToken)
+    }
+  }
+}
+</script>
+
+<style lang="less">
+#app {
+  // font-family: Avenir, Helvetica, Arial, sans-serif;
+  // -webkit-font-smoothing: antialiased;
+  // -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  // color: #2c3e50;
+  width: 100%;
+  height:100%;
+  // padding-bottom: constant(safe-area-inset-bottom);
+  // padding-bottom: env(safe-area-inset-bottom);
+
+  //禁止动画闪屏
+  perspective: 1000;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transform: translate3d(0, 0, 0);//动画更流畅
+
+  //push页面时： 新页面进入动画
+  .fold-left-enter-active{
+    animation-name: fold-left-in;
+    animation-duration: .4s;
+  }
+  @keyframes fold-left-in{
+    0% {
+      transform: translate(100%,0);
+    }
+    100%{
+      transform: translate(0,0);
+    }
+  }
+  //push页面时： 原页面退出动画
+  .fold-left-leave-active{
+    animation-name: fold-left-out;
+    animation-duration: .4s;
+  }
+  @keyframes fold-left-out{
+    0% {
+      transform: translate(0,0);
+    }
+    100%{
+      transform: translate(-100%,0);
+    }
+  }
+  //后退页面时： 即将展示页面的动画
+  .fold-right-enter-active{
+    animation-name: fold-right-in;
+    animation-duration: .4s;
+  }
+  @keyframes fold-right-in{
+    0% {
+      transform: translate(-100%,0);
+    }
+    100%{
+      transform: translate(0,0);
+    }
+  }
+  //后退页面时： 后退页面的动画
+  .fold-right-leave-active{
+    animation-name: fold-right-out;
+    animation-duration: .4s;
+  }
+  @keyframes fold-right-out{
+    0% {
+      transform: translate(0,0);
+    }
+    100%{
+      transform: translate(100%,0);
+    }
+  }
+}
+</style>
