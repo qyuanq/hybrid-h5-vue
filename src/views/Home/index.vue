@@ -43,7 +43,7 @@
           </div>
         </van-pull-refresh>
       </div>
-      <v-top :scroll-top-value="scrollTopValue" ele="hook" @scrollToTop="scrollToTop" />
+      <v-top :scroll-top-value="scrollTopValue" ele="hook" />
     </div>
   </div>
 </template>
@@ -118,9 +118,6 @@ export default {
       // 下拉刷新导航隐藏，背景改红,vant待优化
       await this.$refs.goods.initData()
       this.isLoading = false
-    },
-    scrollToTop() {
-      this.$refs.scroll.scrollTop = 0
     }
   }
 }

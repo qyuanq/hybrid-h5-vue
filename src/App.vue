@@ -5,8 +5,6 @@
         <router-view />
       </keep-alive>
     </transition>
-    <!-- 底部导航 -->
-
   </div>
 </template>
 <script>

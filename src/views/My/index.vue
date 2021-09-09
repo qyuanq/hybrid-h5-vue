@@ -160,6 +160,7 @@ export default {
     }
   }
   &-content{
+    width: 100%;
     .scroll-view();
     position: absolute;
     left: 0;

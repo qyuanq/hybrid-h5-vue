@@ -23,14 +23,18 @@ export default {
   },
   data() {
     return {
+
     }
   },
-
   methods: {
     toTop() {
       // scrollIntoView 不兼容ios本机测试版本12
       document.getElementById(this.ele).scrollIntoView()
-      this.$emit('scrollToTop')
+      // 要求所有页面的scroll-view class都要设置为scroll
+      if (this.scrollTopValue !== 0) {
+        // 兼容处理
+        document.querySelector('.scroll').scrollTop = 0
+      }
     }
   }
 }

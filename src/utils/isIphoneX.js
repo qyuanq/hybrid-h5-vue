@@ -1,6 +1,6 @@
 /**
  * 判断当前设置是否为IphoneX
- * @return boolean true  表示当前设备为iphonex。false就表示不为Iphonex
+ * @return boolean true 表示当前设备为iphonex。false就表示不为Iphonex
  */
 const isIphoneX = () => {
   // window对象存在执行逻辑

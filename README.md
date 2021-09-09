@@ -1,47 +1,65 @@
-# 基于vue 混合开发
+# 简介
+**hybrid-h5-vue**是一个移动端混合开发电商项目，它基于vue 2.x和vant 2.x实现，使用了vue全家桶。后台数据通过Easy-mock搭建。
+## 功能实现
 
-## Project setup
+- [ √ ] 首页
+
+  >>商品秒杀
+  
+  >>飞入购物车动画
+  
+- [ √ ] 分类
+
+- [ √ ] 购物车
+
+- [ √ ] 订单
+
+- [ √ ] 个人中心
+
+- [ √ ] 商品列表
+
+  >>商品排序
+  
+  >>展示形式变换
+    >>>垂直布局
+    >>>网格布局
+    >>>瀑布流
+    
+- [ √ ] 商品详情
+
+  >>视差滚动
+  
+- [ √ ] 登录
+
+- [ √ ] 注册
+
+## 安装
 ```
+# 克隆项目到本地
+git clone https://github.com/qyuanq/hybrid-h5-vue.git
+
+# 进入项目目录
+cd hybrid-h5-vue
+
+# 安装依赖
 npm install
-```
 
-### Compiles and hot-reloads for development
-```
+# 启动服务
 npm run serve
+
+# 浏览器访问
+http://localhost:9001
 ```
 
-### Compiles and minifies for production
+## 发布
 ```
+# 打包前将vue.config.js下列注释打开
+const TerserPlugin = require('terser-webpack-plugin') //第4行
+minimizer: [                                          //第72行
+  new TerserPlugin({
+    ......
+    })
+  ]
 npm run build
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### 业务组件
-  #### 分类列表
-    基于better-scroll
-    1. 引入依赖
-    `import BScroll from '@better-scroll/core'`
-    2. 滚动列表初始化
-    在mounted中利用$nextTick
-    判断是否存在bs实例，不存在就创建，存在就刷新
-    当数据发生变化，刷新bs 重新计算 不然会滚动失效
-    3.（1） ScrollCategory.vue 该组件一次性获取分类数据，左右滚动联动
-      （2） ScrollContent.vue 该组件分类获取数据，切换分类一请求，上拉加载分页数据
-    4.待优化方案
-      （1）根据菜单创建大小一致的数组，比如10个菜单对应[0,0,0,0,0,0,0,0,0,0]
-      （2）初始化第一个数据替换数组[data,0,0,0,0,0,0,0,0,0]
-      （3）内容列表实现上拉 请求index-1数据 并替换数组对应索引数据 计算当前内容高度和之后索引高度；
-           第一个索引没有上拉功能
-      （4）内容列表实现下拉 请求index+1数据 并替换数组对应索引数据 计算当前内容高度和之后索引高度；
-           最后一个索引没有下拉功能
-      （5）点击菜单 请求对应index数据 并替换数组对应索引数据 计算当前内容高度和之后索引高度；
-      （6）上列3，4，5项任意执行先判断数组当前对应值是否为0；
-            0请求数据，计算当前高度为内容高度加上一个不为0高度，动态更新index后面的不为0高度值
-            不为0 不做为
-      （7） 菜单选中项，点击 active = index
-                      上拉 scrollY < index对应高度值 active = index - 1
-                      下滑 scrollY > index对应高度值 active = index + 1
