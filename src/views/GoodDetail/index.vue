@@ -32,6 +32,13 @@
           <van-swipe class="good-detail-swiper" @change="onChangeSwiper">
             <van-swipe-item v-for="(image,index) in images" :key="index">
               <div class="my-swiper-item">
+                <!-- 加载高保真图性能优化，渐进加载 放在此处仅供测试 -->
+                <!-- <img src="../../assets/images/slt.jpg" class="my-swipe-slt" :style="{visibility: !isLoad ? 'hidden' : 'visible'}">
+                <img :src="image" class="my-swipe-img" @load="loadImg('success')" @error="loadImg('error')"> -->
+                <!-- 加载高保真图性能优化，骨架屏 -->
+                <!-- <van-skeleton row="1" :loading="isLoad" />
+                <img :src="image" class="my-swipe-img" @load="loadImg('success')" @error="loadImg('error')"> -->
+                <!-- 懒加载 -->
                 <img v-lazy="image" class="my-swipe-img">
               </div>
             </van-swipe-item>
@@ -81,7 +88,7 @@
               <img
                 v-for="item in goodInfo.detailImgs"
                 :key="item"
-                :src="item"
+                v-lazy="item"
                 alt="详情图片"
                 class="good-detail-images-img"
               >
@@ -129,7 +136,9 @@ export default {
       // 滚动距离
       scrollTopValue: 0,
       // 滚动锚点值
-      ANCHOR_SCROLL_TOP: 310
+      ANCHOR_SCROLL_TOP: 310,
+      // 高保真图加载完成,true代表没加载完成
+      isLoad: true
     }
   },
 
@@ -190,6 +199,14 @@ export default {
      */
     async addCart() {
       await this.$store.dispatch('Cart/addCartData', this.goodInfo)
+    },
+    // 监听高保真图片加载完成
+    loadImg(status) {
+      if (status === 'success') {
+        this.isLoad = false
+        return
+      }
+      this.isLoad = true
     }
   }
 }
@@ -216,9 +233,16 @@ export default {
       .van-swipe__track{
           height: 750px;
       }
+      .van-skeleton__row, .van-skeleton__title{
+        height: 750px;
+      }
     }
     .my-swipe-item{
       box-sizing: border-box;
+    }
+    .my-swipe-slt{
+      position: absolute;
+      filter: blur(25px);
     }
     .my-swipe-img{
         width: 100%;
