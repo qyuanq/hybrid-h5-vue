@@ -11,7 +11,7 @@
             <van-search v-model="keywords" class="van-search" placeholder="请输入搜索关键词" />
           </template>
           <template v-slot:right>
-            <svg-icon icon-class="zixun" class-name="zixun" />
+            <svg-icon icon-class="zixun" class-name="zixun" @click="onSend" />
           </template>
         </nav-bar>
       </div>
@@ -98,6 +98,14 @@ export default {
 
   mounted() {
     this.isShowLoading = false
+    // 发送pv埋点
+    const { aplus_queue } = window
+    aplus_queue.push({
+      action: 'aplus.sendPV',
+      arguments: [{
+        is_auto: false
+      }]
+    })
   },
   methods: {
     /**
@@ -118,6 +126,18 @@ export default {
       // 下拉刷新导航隐藏，背景改红,vant待优化
       await this.$refs.goods.initData()
       this.isLoading = false
+    },
+    // 发送埋点事件
+    onSend() {
+      const { aplus_queue } = window
+      aplus_queue.push({
+        action: 'aplus.record',
+        arguments: ['1', 'CLK', {
+          param1: '111',
+          param2: '222',
+          param3: '333'
+        }]
+      })
     }
   }
 }
