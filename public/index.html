@@ -38,4 +38,18 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
+  <script>
+  // 注册监听函数
+  const observer = new MutationObserver((mutations) => {
+    console.log(window.performance.now());
+    // for (let i = 0; i < mutations.length; i++) {
+    //   console.log(mutations[0].type);
+    // }
+    });
+    // 开始监听 document 的节点变化,最大值为首屏加载时间
+    observer.observe(document, {
+      childList: true,
+      subtree: true,
+    });
+  </script>
 </html>
