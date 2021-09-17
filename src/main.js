@@ -3,6 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import FastClick from 'fastclick'
+// 接入sentry
+import * as Sentry from '@sentry/vue'
+import { Integrations } from '@sentry/tracing'
+
 // css初始化
 import 'normalize.css/normalize.css'
 import 'amfe-flexible'
@@ -67,6 +71,24 @@ Vue.prototype.$toast = Toast
 FastClick.attach(document.body)
 
 Vue.config.productionTip = false
+
+// 初始化 sentry
+process.env.NODE_ENV === 'production' && Sentry.init({
+  Vue,
+  dsn: 'http://d5903ac178ef48a1814b43178e061c3f@127.0.0.1:9000/2',
+  integrations: [
+    new Integrations.BrowserTracing({
+      routingInstrumentation: Sentry.vueRouterInstrumentation(router),
+      tracingOrigins: ['localhost', 'my-site-url.com', /^\//]
+    })
+  ],
+  logErrors: true,
+  release: 'pro@1.0.1',
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0
+})
 
 new Vue({
   router,

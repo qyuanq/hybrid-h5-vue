@@ -1,0 +1,7 @@
+[defaults]
+url=http://127.0.0.1:9000/
+org=qyuanq@outlook.com
+project=hybrid-h5-vue
+
+[auth]
+token=5493d5cf0d2f4aa7ab5f4ca7706ddad2f407d84b1301454cb5be799c156fc626

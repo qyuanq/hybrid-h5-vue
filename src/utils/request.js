@@ -1,4 +1,5 @@
 import axios from 'axios'
+import axiosRetry from 'axios-retry'
 import { Notify } from 'vant'
 // import store from "@/store";
 // import { getToken } from "@/utils/auth";
@@ -74,5 +75,22 @@ service.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+
+// 请求失败自动请求
+axiosRetry(service, { // 传入axios实例
+  retries: 2, // 设置自动发送请求次数
+  retryDelay: (retryCount) => {
+    return retryCount * 1500 // 重复请求延迟（毫秒）
+  },
+  shouldResetTimeout: true, //  重置超时时间
+  retryCondition: (error) => {
+    // true为打开自动发送请求，false为关闭自动发送请求
+    if (error.message.includes('timeout') || error.message.includes('status code')) {
+      return true
+    } else {
+      return false
+    }
+  }
+})
 
 export default service
