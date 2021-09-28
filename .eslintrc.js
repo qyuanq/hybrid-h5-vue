@@ -1,11 +1,13 @@
 module.exports = {
   root: true,
+
   //parser: 'vue-eslint-parser', //-
   parserOptions: {
     parser: 'babel-eslint',
     sourceType: 'module',
     ecmaVersion: 2020 //-
   },
+
   // plugins: [
   //   //-
   //   // "html",
@@ -16,6 +18,7 @@ module.exports = {
     node: true,
     es6: true
   },
+
   //基于vue2配置 如果不用prettier 就不加后面的prettier 'plugin:prettier/recommended'
   extends: ['plugin:vue/recommended', 'eslint:recommended'],
 
