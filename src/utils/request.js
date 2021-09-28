@@ -1,5 +1,6 @@
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
+import { addPendingRequest, removePendingRequest } from './cancelRepeatRquest'
 import { Notify } from 'vant'
 // import store from "@/store";
 // import { getToken } from "@/utils/auth";
@@ -12,22 +13,25 @@ const service = axios.create({
 })
 
 // request interceptor
-// service.interceptors.request.use(
-//   (config) => {
-//     if (store.getters.token) {
-//       config.headers["X-Token"] = getToken();
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     console.log(error);
-//     return Promise.reject(error);
-//   }
-// );
+service.interceptors.request.use(
+  (config) => {
+    // if (store.getters.token) {
+    //   config.headers["X-Token"] = getToken();
+    // }
+    removePendingRequest(config)
+    addPendingRequest(config)
+    return config
+  },
+  (error) => {
+    console.log(error)
+    return Promise.reject(error)
+  }
+)
 
 // response interceptor
 service.interceptors.response.use(
   (response) => {
+    removePendingRequest(response.config)
     const res = response.data
     // 文件流不需要验证code
     // if (
@@ -66,6 +70,7 @@ service.interceptors.response.use(
     }
   },
   error => {
+    removePendingRequest(error.config || {})
     console.log('err' + error) // for debug
     Notify({
       message: error.message,

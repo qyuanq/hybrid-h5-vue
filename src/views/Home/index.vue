@@ -5,7 +5,7 @@
       <div class="home-header">
         <nav-bar :fixed="true" class="home-nav-bar z-index-4" :nav-bar-style="navBarStyle" :border="false">
           <template v-slot:left>
-            <svg-icon icon-class="menu" />
+            <svg-icon icon-class="menu" @click="testAxios" />
           </template>
           <template v-slot:title>
             <van-search v-model="keywords" class="van-search" placeholder="请输入搜索关键词" />
@@ -138,6 +138,10 @@ export default {
           param3: '333'
         }]
       })
+    },
+    async testAxios() {
+      const res = await this.$refs.goods.initData()
+      console.log(res)
     }
   }
 }

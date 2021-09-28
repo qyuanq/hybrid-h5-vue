@@ -26,6 +26,7 @@
     "lodash-es": "^4.17.21",
     "mini-css-extract-plugin": "^2.2.2",
     "normalize.css": "^8.0.1",
+    "qs": "^6.10.1",
     "terser-webpack-plugin": "^4.2.3",
     "vant": "^2.12.24",
     "vue": "^2.6.11",
@@ -51,7 +52,7 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^6.2.2",
     "glob-all": "^3.2.1",
-    "husky": "^7.0.1",
+    "husky": "^7.0.0",
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
     "lint-staged": "^11.1.0",
@@ -77,7 +78,9 @@
       "eslint  --fix"
     ]
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
